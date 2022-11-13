@@ -21,12 +21,15 @@ export default function Sidebar() {
             <i className="fas fa-bars"></i>
           </button>
           {/* Brand */}
-          <Link href="/">
+          <Link href="/admin/dashboard">
             <a
               href="#pablo"
-              className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
+              className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold "
             >
-              Notus NextJS
+              <img
+                src="https://res.cloudinary.com/ak-tracuusaubenh/image/upload/v1668310702/ak-tracuusaubenh/Screenshot_2022-09-02_151147-removebg-preview_pu5byn.png"
+                alt=""
+              />
             </a>
           </Link>
           {/* User */}
@@ -48,7 +51,7 @@ export default function Sidebar() {
             {/* Collapse header */}
             <div className="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200">
               <div className="flex flex-wrap">
-                <div className="w-6/12">
+                {/* <div className="w-6/12">
                   <Link href="/">
                     <a
                       href="#pablo"
@@ -57,7 +60,7 @@ export default function Sidebar() {
                       Notus NextJS
                     </a>
                   </Link>
-                </div>
+                </div> */}
                 <div className="w-6/12 flex justify-end">
                   <button
                     type="button"
