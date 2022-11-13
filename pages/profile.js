@@ -1,7 +1,7 @@
 import React from "react";
 
-import Navbar from "components/Navbars/AuthNavbar.js";
-import Footer from "components/Footers/Footer.js";
+import Navbar from "../components/Navbars/AuthNavbar.jsx";
+import Footer from "../components/Footers/Footer.jsx";
 
 export default function Profile() {
   return (
