@@ -8,57 +8,57 @@ export default function HeaderStats() {
   return (
     <>
       {/* Header */}
-      <div className="relative bg-blueGray-800 md:pt-32 pb-32 pt-12">
+      <div className="relative bg-slate-800 md:pt-32 pb-32 pt-12">
         <div className="px-4 md:px-10 mx-auto w-full">
           <div>
             {/* Card stats */}
             <div className="flex flex-wrap">
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="TRAFFIC"
+                  statSubtitle="bài viết chờ duyệt"
                   statTitle="350,897"
-                  statArrow="up"
-                  statPercent="3.48"
-                  statPercentColor="text-emerald-500"
-                  statDescripiron="Since last month"
-                  statIconName="far fa-chart-bar"
+                  statIconName="far fa-newspaper"
                   statIconColor="bg-red-500"
+                  // statPercentColor="text-emerald-500"
+                  // statPercent="3.48"
+                  // statDescripiron="Since last month"
+                  // statArrow="up"
                 />
               </div>
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="NEW USERS"
+                  statSubtitle="tổng số bệnh"
                   statTitle="2,356"
-                  statArrow="down"
-                  statPercent="3.48"
-                  statPercentColor="text-red-500"
-                  statDescripiron="Since last week"
                   statIconName="fas fa-chart-pie"
                   statIconColor="bg-orange-500"
+                  // statPercentColor="text-red-500"
+                  // statArrow="down"
+                  // statDescripiron="Since last week"
+                  // statPercent="3.48"
                 />
               </div>
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="SALES"
+                  statSubtitle="số lượng người dùng"
                   statTitle="924"
-                  statArrow="down"
-                  statPercent="1.10"
-                  statPercentColor="text-orange-500"
-                  statDescripiron="Since yesterday"
                   statIconName="fas fa-users"
                   statIconColor="bg-pink-500"
+                  // statPercentColor="text-orange-500"
+                  // statDescripiron="Since yesterday"
+                  // statPercent="1.10"
+                  // statArrow="down"
                 />
               </div>
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
                   statSubtitle="PERFORMANCE"
                   statTitle="49,65%"
-                  statArrow="up"
                   statPercent="12"
-                  statPercentColor="text-emerald-500"
-                  statDescripiron="Since last month"
                   statIconName="fas fa-percent"
-                  statIconColor="bg-blueGray-500"
+                  // statArrow="up"
+                  // statPercentColor="text-emerald-500"
+                  // statDescripiron="Since last month"
+                  // statIconColor="bg-slate-500"
                 />
               </div>
             </div>

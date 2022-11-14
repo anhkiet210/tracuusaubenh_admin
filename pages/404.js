@@ -3,7 +3,7 @@ import Router from "next/router";
 
 const Error404 = () => {
   useEffect(() => {
-    Router.push("/");
+    Router.push("/admin/dashboard");
   }, []);
 
   return <div />;

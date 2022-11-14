@@ -24,7 +24,7 @@ export default function Sidebar() {
           <Link href="/admin/dashboard">
             <a
               href="#pablo"
-              className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold "
+              className="md:block text-left md:pb-2 text-slate-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold "
             >
               <img
                 src="https://res.cloudinary.com/ak-tracuusaubenh/image/upload/v1668310702/ak-tracuusaubenh/Screenshot_2022-09-02_151147-removebg-preview_pu5byn.png"
@@ -49,7 +49,7 @@ export default function Sidebar() {
             }
           >
             {/* Collapse header */}
-            <div className="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200">
+            <div className="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-slate-200">
               <div className="flex flex-wrap">
                 <div className="w-6/12 flex justify-end">
                   <button
@@ -68,7 +68,7 @@ export default function Sidebar() {
                 <input
                   type="text"
                   placeholder="Search"
-                  className="border-0 px-3 py-2 h-12  border-solid  border-blueGray-500 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base leading-snug shadow-none outline-none focus:outline-none w-full font-normal"
+                  className="border-0 px-3 py-2 h-12  border-solid  border-slate-500 placeholder-slate-300 text-slate-600 bg-white rounded text-base leading-snug shadow-none outline-none focus:outline-none w-full font-normal"
                 />
               </div>
             </form>
@@ -76,7 +76,7 @@ export default function Sidebar() {
             {/* Divider */}
             <hr className="my-4 md:min-w-full" />
             {/* Heading */}
-            {/* <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+            {/* <h6 className="md:min-w-full text-slate-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
               Admin Layout Pages
             </h6> */}
             {/* Navigation */}
@@ -89,8 +89,8 @@ export default function Sidebar() {
                     className={
                       "text-xs uppercase py-3 font-bold flex " +
                       (router.pathname.indexOf("/admin/dashboard") !== -1
-                        ? "text-blueGray-500 hover:text-blueGray-600"
-                        : "text-blueGray-700 hover:text-blueGray-500")
+                        ? "text-slate-900 hover:text-slate-600"
+                        : "text-slate-400 hover:text-slate-700")
                     }
                   >
                     <i
@@ -98,7 +98,7 @@ export default function Sidebar() {
                         "fas fa-tv mr-2 text-sm " +
                         (router.pathname.indexOf("/admin/dashboard") !== -1
                           ? "opacity-75"
-                          : "text-blueGray-300")
+                          : "text-slate-300")
                       }
                     ></i>{" "}
                     Bảng điều khiển
@@ -113,8 +113,8 @@ export default function Sidebar() {
                     className={
                       "text-xs uppercase py-3 font-bold block " +
                       (router.pathname.indexOf("/admin/account") !== -1
-                        ? "text-blueGray-500 hover:text-blueGray-600"
-                        : "text-blueGray-700 hover:text-blueGray-500")
+                        ? "text-slate-900 hover:text-slate-600"
+                        : "text-slate-400 hover:text-slate-700")
                     }
                   >
                     <i
@@ -122,7 +122,7 @@ export default function Sidebar() {
                         "fas fa-user mr-2 text-sm " +
                         (router.pathname.indexOf("/admin/account") !== -1
                           ? "opacity-75"
-                          : "text-blueGray-300")
+                          : "text-slate-300")
                       }
                     ></i>{" "}
                     Tài Khoản
@@ -137,8 +137,8 @@ export default function Sidebar() {
                     className={
                       "text-xs uppercase py-3 font-bold block " +
                       (router.pathname.indexOf("/admin/users") !== -1
-                        ? "text-blueGray-500 hover:text-blueGray-600"
-                        : "text-blueGray-700 hover:text-blueGray-500")
+                        ? "text-slate-900 hover:text-slate-600"
+                        : "text-slate-400 hover:text-slate-700")
                     }
                   >
                     <i
@@ -146,10 +146,58 @@ export default function Sidebar() {
                         "fas fa-table mr-2 text-sm " +
                         (router.pathname.indexOf("/admin/users") !== -1
                           ? "opacity-75"
-                          : "text-blueGray-300")
+                          : "text-slate-300")
                       }
                     ></i>{" "}
                     Quản lý người dùng
+                  </a>
+                </Link>
+              </li>
+
+              <li className="items-center">
+                <Link href="/admin/pests">
+                  <a
+                    href="#pablo"
+                    className={
+                      "text-xs uppercase py-3 font-bold block " +
+                      (router.pathname.indexOf("/admin/pests") !== -1
+                        ? "text-slate-900 hover:text-slate-600"
+                        : "text-slate-400 hover:text-slate-700")
+                    }
+                  >
+                    <i
+                      className={
+                        "fas fa-table mr-2 text-sm " +
+                        (router.pathname.indexOf("/admin/pests") !== -1
+                          ? "opacity-75"
+                          : "text-slate-300")
+                      }
+                    ></i>{" "}
+                    Quản lý sâu bệnh
+                  </a>
+                </Link>
+              </li>
+
+              <li className="items-center">
+                <Link href="/admin/crops">
+                  <a
+                    href="#pablo"
+                    className={
+                      "text-xs uppercase py-3 font-bold block " +
+                      (router.pathname.indexOf("/admin/crops") !== -1
+                        ? "text-slate-900 hover:text-slate-600"
+                        : "text-slate-400 hover:text-slate-700")
+                    }
+                  >
+                    <i
+                      className={
+                        "fas fa-table mr-2 text-sm " +
+                        (router.pathname.indexOf("/admin/crops") !== -1
+                          ? "opacity-75"
+                          : "text-slate-300")
+                      }
+                    ></i>{" "}
+                    Quản lý loại cây trồng
                   </a>
                 </Link>
               </li>
@@ -161,8 +209,8 @@ export default function Sidebar() {
                     className={
                       "text-xs uppercase py-3 font-bold block " +
                       (router.pathname.indexOf("/admin/maps") !== -1
-                        ? "text-blueGray-500 hover:text-blueGray-600"
-                        : "text-blueGray-700 hover:text-blueGray-500")
+                        ? "text-slate-500 hover:text-slate-600"
+                        : "text-slate-700 hover:text-slate-500")
                     }
                   >
                     <i
@@ -170,7 +218,7 @@ export default function Sidebar() {
                         "fas fa-map-marked mr-2 text-sm " +
                         (router.pathname.indexOf("/admin/maps") !== -1
                           ? "opacity-75"
-                          : "text-blueGray-300")
+                          : "text-slate-300")
                       }
                     ></i>{" "}
                     Maps

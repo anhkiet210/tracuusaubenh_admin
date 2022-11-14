@@ -13,7 +13,7 @@ class MyDocument extends Document {
             href="https://res.cloudinary.com/ak-tracuusaubenh/image/upload/v1667751701/ak-tracuusaubenh/Screenshot_2022-09-02_152018-removebg-preview_1_meicoh.png"
           />
         </Head>
-        <body className="text-blueGray-700 antialiased">
+        <body className="text-slate-700 antialiased">
           <div id="page-transition"></div>
           <Main />
           <NextScript />

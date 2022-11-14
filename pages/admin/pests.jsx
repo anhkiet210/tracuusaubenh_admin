@@ -2,56 +2,38 @@ import React from "react";
 
 // components
 
-import CardLineChart from "../../components/Cards/CardLineChart.jsx";
-import CardBarChart from "../../components/Cards/CardBarChart.jsx";
-import CardPageVisits from "../../components/Cards/CardPageVisits.jsx";
-import CardSocialTraffic from "../../components/Cards/CardSocialTraffic.jsx";
+import CardTable from "../../components/Cards/CardTable.jsx";
 import TableDropdown from "../../components/Dropdowns/TableDropdown.jsx";
 
 // layout for page
 
 import Admin from "../../layouts/Admin.jsx";
-import CardTable from "../../components/Cards/CardTable.jsx";
 
 const thead = [
   {
     id: 1,
-    name: "Tiêu đề bài viết",
+    name: "Tên bệnh",
   },
   {
     id: 2,
-    name: "Ảnh bài viết",
+    name: "Ảnh",
   },
   {
     id: 3,
-    name: "Trạng thái",
+    name: "Loại cây",
   },
   {
     id: 4,
-    name: "Tác giả",
+    name: "Triệu chứng",
   },
 ];
 
-export default function Dashboard() {
+export default function Pests() {
   return (
     <>
-      <div className="flex flex-wrap">
-        <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-          <CardLineChart />
-        </div>
-        <div className="w-full xl:w-4/12 px-4">
-          <CardBarChart />
-        </div>
-      </div>
-      <div className="flex flex-wrap mt-4">
-        <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-          <CardPageVisits />
-        </div>
-        <div className="w-full xl:w-4/12 px-4">
-          <CardSocialTraffic />
-        </div>
-        <div className="w-full  px-4">
-          <CardTable name="Bài viết chờ duyệt" thead={thead}>
+      <div className="flex flex-wrap mt-4 min-h-full">
+        <div className="w-full mb-12 px-4">
+          <CardTable thead={thead}>
             <tr>
               <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                 <span
@@ -60,7 +42,7 @@ export default function Dashboard() {
                 //   +(color === "light" ? "text-slate-600" : "text-white")
                 // }
                 >
-                  Argon Design System
+                  Tiêu đề bài viết
                 </span>
               </th>
               <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -88,4 +70,4 @@ export default function Dashboard() {
   );
 }
 
-Dashboard.layout = Admin;
+Pests.layout = Admin;
