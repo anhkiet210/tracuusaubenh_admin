@@ -1,8 +1,75 @@
-import React from "react";
+import React, { useRef } from "react";
+import { login } from "../../services/authService";
+import { useForm } from "react-hook-form";
+import ErrorMessage from "../../components/ErrorMessage";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useSnackbar } from "notistack";
+import { setToken } from "../../utils/jwt";
+import { useRouter } from "next/router";
+import Spinner from "../../components/Spinner";
 
 // layout for page
 
 export default function Login() {
+  const router = useRouter();
+  const loadingLogin = useRef(false);
+  const { enqueueSnackbar } = useSnackbar();
+  const schema = yup.object().shape({
+    email: yup
+      .string()
+      .email("Hãy nhập đúng định dạng email!")
+      .required("Hãy nhập email!"),
+    password: yup
+      .string()
+      .required("Hãy nhập mật khẩu!")
+      .min(8, "Mật khẩu phải có ít nhất 8 ký tự!"),
+  });
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({ resolver: yupResolver(schema) });
+
+  const handleSubmitForm = async (data) => {
+    try {
+      loadingLogin.current = true;
+      const info = {
+        email: data.email,
+        password: data.password,
+      };
+      const res = await login(info);
+      if (res === "ERR_NETWORK") {
+        enqueueSnackbar("Lỗi kết nối server!", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+      if (res === "ERR_BAD_RESPONSE") {
+        enqueueSnackbar("Lỗi server!", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+      if (res?.success) {
+        setToken(res.accessToken);
+        localStorage.setItem("Token", res?.accessToken);
+        router.replace("/admin/dashboard");
+        enqueueSnackbar(res.message, {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      }
+      loadingLogin.current = false;
+    } catch (error) {
+      console.log(error);
+      loadingLogin.current = false;
+      enqueueSnackbar(error.message, {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    }
+  };
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -10,7 +77,7 @@ export default function Login() {
           <div className="w-full lg:w-4/12 px-4">
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-slate-200 border-0">
               <div className="flex-auto px-4 lg:px-10 py-10">
-                <form>
+                <form onSubmit={handleSubmit(handleSubmitForm)}>
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-slate-600 text-xs font-bold mb-2"
@@ -19,10 +86,16 @@ export default function Login() {
                       Email
                     </label>
                     <input
+                      {...register("email", {
+                        required: "Hãy nhập email!",
+                      })}
                       type="email"
                       className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
                     />
+                    {errors?.email && (
+                      <ErrorMessage mess={errors?.email?.message} />
+                    )}
                   </div>
 
                   <div className="relative w-full mb-3">
@@ -30,15 +103,19 @@ export default function Login() {
                       className="block uppercase text-slate-600 text-xs font-bold mb-2"
                       htmlFor="grid-password"
                     >
-                      Password
+                      Mật khẩu
                     </label>
                     <input
+                      {...register("password")}
                       type="password"
                       className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      placeholder="Password"
+                      placeholder="Mật khẩu"
                     />
+                    {errors?.password && (
+                      <ErrorMessage mess={errors?.password?.message} />
+                    )}
                   </div>
-                  <div>
+                  {/* <div>
                     <label className="inline-flex items-center cursor-pointer">
                       <input
                         id="customCheckLogin"
@@ -49,14 +126,14 @@ export default function Login() {
                         Remember me
                       </span>
                     </label>
-                  </div>
+                  </div> */}
 
                   <div className="text-center mt-6">
                     <button
                       className="bg-slate-800 text-white active:bg-slate-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                      type="button"
+                      type="submit"
                     >
-                      Sign In
+                      {loadingLogin.current ? <Spinner /> : "Đăng nhập"}
                     </button>
                   </div>
                 </form>
