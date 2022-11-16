@@ -4,7 +4,7 @@ function Spinner() {
       <div role="status">
         <svg
           aria-hidden="true"
-          className="mr-2 w-5 h-5 text-[#ccc] animate-spin dark:text-gray-600 fill-primary1"
+          className="mr-2 w-5 h-5 text-[#ccc] animate-spin dark:text-gray-600 fill-indigo-500"
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

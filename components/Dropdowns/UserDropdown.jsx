@@ -1,7 +1,9 @@
 import React from "react";
 import { createPopper } from "@popperjs/core";
+import { useSelector } from "react-redux";
 
 const UserDropdown = () => {
+  const user = useSelector((state) => state.auth.currentUser);
   // dropdown props
   const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
   const btnDropdownRef = React.createRef();
@@ -27,11 +29,11 @@ const UserDropdown = () => {
         }}
       >
         <div className="items-center flex">
-          <span className="w-12 h-12 text-sm text-white bg-slate-200 inline-flex items-center justify-center rounded-full">
+          <span className="w-12 h-12 text-sm overflow-hidden text-white bg-slate-200 inline-flex items-center justify-center rounded-full">
             <img
               alt="..."
-              className="w-full rounded-full align-middle border-none shadow-lg"
-              src="/img/team-1-800x800.jpg"
+              className="w-full h-full object-cover rounded-full align-middle border-none shadow-lg"
+              src={user?.anhdaidien}
             />
           </span>
         </div>

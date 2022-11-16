@@ -1,10 +1,13 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 // components
 
 import CardStats from "../Cards/CardStats.jsx";
 
 export default function HeaderStats() {
+  const allUsers = useSelector((state) => state.auth.allUsers);
+  const allPests = useSelector((state) => state.pest.allPests);
   return (
     <>
       {/* Header */}
@@ -28,7 +31,7 @@ export default function HeaderStats() {
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
                   statSubtitle="tổng số bệnh"
-                  statTitle="2,356"
+                  statTitle={allPests?.length}
                   statIconName="fas fa-chart-pie"
                   statIconColor="bg-orange-500"
                   // statPercentColor="text-red-500"
@@ -40,7 +43,7 @@ export default function HeaderStats() {
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
                   statSubtitle="số lượng người dùng"
-                  statTitle="924"
+                  statTitle={allUsers?.length}
                   statIconName="fas fa-users"
                   statIconColor="bg-pink-500"
                   // statPercentColor="text-orange-500"

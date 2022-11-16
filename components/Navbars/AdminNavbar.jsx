@@ -3,6 +3,7 @@ import React from "react";
 import UserDropdown from "../Dropdowns/UserDropdown.jsx";
 
 export default function Navbar() {
+
   return (
     <>
       {/* Navbar */}

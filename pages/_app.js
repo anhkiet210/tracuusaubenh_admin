@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
+import { Provider } from "react-redux";
+import store from "../redux/store.js";
 import { SnackbarProvider } from "notistack";
 
 import PageChange from "../components/PageChange/PageChange.jsx";
@@ -47,13 +49,15 @@ export default class MyApp extends App {
           />
           <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
         </Head>
-        <SnackbarProvider
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </SnackbarProvider>
+        <Provider store={store}>
+          <SnackbarProvider
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </SnackbarProvider>
+        </Provider>
       </React.Fragment>
     );
   }

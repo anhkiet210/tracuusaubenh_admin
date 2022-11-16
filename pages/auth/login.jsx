@@ -39,18 +39,6 @@ export default function Login() {
         password: data.password,
       };
       const res = await login(info);
-      if (res === "ERR_NETWORK") {
-        enqueueSnackbar("Lỗi kết nối server!", {
-          variant: "error",
-          autoHideDuration: 2000,
-        });
-      }
-      if (res === "ERR_BAD_RESPONSE") {
-        enqueueSnackbar("Lỗi server!", {
-          variant: "error",
-          autoHideDuration: 2000,
-        });
-      }
       if (res?.success) {
         setToken(res.accessToken);
         localStorage.setItem("Token", res?.accessToken);
@@ -60,7 +48,29 @@ export default function Login() {
           autoHideDuration: 2000,
         });
       }
+
+      if (res?.code === "ERR_NETWORK") {
+        enqueueSnackbar("Lỗi kết nối server!", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+
+      if (res?.code === "ERR_BAD_RESPONSE") {
+        enqueueSnackbar("Lỗi server!", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+
+      if (res?.response?.status === 401) {
+        enqueueSnackbar(res?.response.data.message, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
       loadingLogin.current = false;
+      console.log("res login", res);
     } catch (error) {
       console.log(error);
       loadingLogin.current = false;
@@ -130,7 +140,9 @@ export default function Login() {
 
                   <div className="text-center mt-6">
                     <button
-                      className="bg-slate-800 text-white active:bg-slate-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                      className={`bg-slate-800 text-white active:bg-slate-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150 flex items-center justify-center ${
+                        loadingLogin.current ? "disabled:opacity-75" : ""
+                      }`}
                       type="submit"
                     >
                       {loadingLogin.current ? <Spinner /> : "Đăng nhập"}

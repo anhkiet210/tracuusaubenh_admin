@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 // components
 
@@ -29,11 +30,13 @@ const thead = [
 ];
 
 export default function Tables() {
+  const allUsers = useSelector((state) => state.auth.allUsers);
+  console.log("người dùng: ", allUsers);
   return (
     <>
       <div className="flex flex-wrap mt-4">
         <div className="w-full mb-12 px-4">
-          <CardTable showBtnAdd={"Thêm loại cây trồng"} thead={thead}>
+          <CardTable thead={thead}>
             <tr>
               <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap py-4">
                 tên người dùng
