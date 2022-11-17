@@ -42,7 +42,7 @@ export default function Login() {
       if (res?.success) {
         setToken(res.accessToken);
         localStorage.setItem("Token", res?.accessToken);
-        router.replace("/admin/dashboard");
+        router.push("/admin/dashboard");
         enqueueSnackbar(res.message, {
           variant: "success",
           autoHideDuration: 2000,
@@ -70,7 +70,7 @@ export default function Login() {
         });
       }
       loadingLogin.current = false;
-      console.log("res login", res);
+      // console.log("res login", res);
     } catch (error) {
       console.log(error);
       loadingLogin.current = false;
@@ -87,7 +87,10 @@ export default function Login() {
           <div className="w-full lg:w-4/12 px-4">
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-slate-200 border-0">
               <div className="flex-auto px-4 lg:px-10 py-10">
-                <form onSubmit={handleSubmit(handleSubmitForm)}>
+                <form
+                  onSubmit={handleSubmit(handleSubmitForm)}
+                  autoComplete="off"
+                >
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-slate-600 text-xs font-bold mb-2"

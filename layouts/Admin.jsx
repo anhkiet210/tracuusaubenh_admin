@@ -17,12 +17,16 @@ import { getInfo } from "../services/authService.js";
 import { getAllUser } from "../services/userService.js";
 import { getAllPests } from "../services/pestService.js";
 import { setAllPests } from "../redux/slice/pestSlice.js";
+import { getToken } from "../utils/jwt.js";
+import { getAllCrops } from "../services/cropService.js";
+import { setAllCrops } from "../redux/slice/cropSlice.js";
 
 export default function Admin({ children }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const [user, setUser] = useState({});
+
   const getCurrentUser = async () => {
     try {
       const res = await getInfo();
@@ -31,7 +35,7 @@ export default function Admin({ children }) {
           variant: "error",
           autoHideDuration: 2000,
         });
-        // router.push("/")
+        router.push("/");
       }
       if (res?.code === "ERR_NETWORK") {
         enqueueSnackbar("Lỗi kết nối server!", {
@@ -50,7 +54,6 @@ export default function Admin({ children }) {
       if (res?.success) {
         dispatch(setInfoCurrentUser(res?.user));
       }
-      // console.log("info user", res);
     } catch (error) {
       console.log(error);
       enqueueSnackbar(error.message, {
@@ -94,9 +97,24 @@ export default function Admin({ children }) {
     try {
       const res = await getAllPests();
       if (res?.success) {
-        dispatch(setAllPests(res?.pests));
+        dispatch(setAllPests(res?.data));
       }
-      console.log("all pests: ", res);
+      // console.log("all pests: ", res);
+    } catch (error) {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    }
+  };
+
+  const handleGetAllCrops = async () => {
+    try {
+      const res = await getAllCrops();
+      if (res?.success) {
+        dispatch(setAllCrops(res?.data));
+      }
+      // console.log("crops: ", res);
     } catch (error) {
       enqueueSnackbar(error.message, {
         variant: "error",
@@ -113,6 +131,7 @@ export default function Admin({ children }) {
           variant: "error",
           autoHideDuration: 2000,
         });
+        return;
       } else {
         getCurrentUser();
       }
@@ -125,6 +144,10 @@ export default function Admin({ children }) {
 
   useEffect(() => {
     handleGetAllPests();
+  }, []);
+
+  useEffect(() => {
+    handleGetAllCrops();
   }, []);
 
   return (

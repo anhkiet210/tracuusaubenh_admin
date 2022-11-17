@@ -67,17 +67,17 @@ CardStats.defaultProps = {
   statIconColor: "bg-red-500",
 };
 
-CardStats.propTypes = {
-  statSubtitle: PropTypes.string,
-  statTitle: PropTypes.string,
-  statArrow: PropTypes.oneOf(["up", "down"]),
-  statPercent: PropTypes.string,
-  // can be any of the text color utilities
-  // from tailwindcss
-  statPercentColor: PropTypes.string,
-  statDescripiron: PropTypes.string,
-  statIconName: PropTypes.string,
-  // can be any of the background color utilities
-  // from tailwindcss
-  statIconColor: PropTypes.string,
-};
+// CardStats.propTypes = {
+//   statSubtitle: PropTypes.string,
+//   statTitle: PropTypes.string,
+//   statArrow: PropTypes.oneOf(["up", "down"]),
+//   statPercent: PropTypes.string,
+//   // can be any of the text color utilities
+//   // from tailwindcss
+//   statPercentColor: PropTypes.string,
+//   statDescripiron: PropTypes.string,
+//   statIconName: PropTypes.string,
+//   // can be any of the background color utilities
+//   // from tailwindcss
+//   statIconColor: PropTypes.string,
+// };

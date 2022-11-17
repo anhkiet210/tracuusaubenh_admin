@@ -3,8 +3,14 @@ import PropTypes from "prop-types";
 
 // components
 
-
-export default function CardTable({ name, color, showBtnAdd, thead, children }) {
+export default function CardTable({
+  name,
+  color,
+  showBtnAdd,
+  thead,
+  children,
+  action,
+}) {
   return (
     <>
       <div
@@ -25,7 +31,10 @@ export default function CardTable({ name, color, showBtnAdd, thead, children }) 
                 {name ? name : "Card Tables"}
               </h3>
               {showBtnAdd && (
-                <button className="outline-none py-2 px-4 bg-slate-800 rounded-lg text-white text-base uppercase flex gap-1 items-center hover:bg-slate-700 transition duration-300">
+                <button
+                  className="outline-none py-2 px-4 bg-slate-800 rounded-lg text-white text-base uppercase flex gap-1 items-center hover:bg-slate-700 transition duration-300"
+                  onClick={action}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

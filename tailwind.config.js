@@ -15,6 +15,15 @@ module.exports = {
       error: "#ff3333",
     },
     extend: {
+      keyframes: {
+        appear: {
+          "0%": { transform: "translate(-50%,-50%)", opacity: "0" },
+          "100%": { transform: "translate(0, 0)", opacity: "1" },
+        },
+      },
+      animation: {
+        "appear-hand": "appear 0.4s linear",
+      },
       minHeight: {
         "screen-75": "75vh",
       },
@@ -75,6 +84,7 @@ module.exports = {
   },
 
   plugins: [
+    require("@tailwindcss/line-clamp"),
     require("@tailwindcss/forms"),
     plugin(function ({ addComponents, theme }) {
       const screens = theme("screens", {});
