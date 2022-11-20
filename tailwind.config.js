@@ -13,6 +13,7 @@ module.exports = {
     colors: {
       ...colors,
       error: "#ff3333",
+      loading: "#6cfd83",
     },
     extend: {
       keyframes: {
@@ -20,9 +21,14 @@ module.exports = {
           "0%": { transform: "translate(-50%,-50%)", opacity: "0" },
           "100%": { transform: "translate(0, 0)", opacity: "1" },
         },
+        toLeft: {
+          "0%": { transform: "translateX(50%)", opacity: "0" },
+          "100%": { transform: "translateX(0)", opacity: "1" },
+        },
       },
       animation: {
         "appear-hand": "appear 0.4s linear",
+        "toLeft-hand": "toLeft 0.4s linear",
       },
       minHeight: {
         "screen-75": "75vh",

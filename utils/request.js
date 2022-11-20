@@ -5,7 +5,7 @@ if (typeof window !== "undefined") {
   var token = localStorage.getItem("Token");
 }
 
-const tokenLocal = JSON.stringify(token);
+// const tokenLocal = JSON.stringify(token);
 
 const request = axios.create({
   baseURL: "https://ak-tracuusaubenh.herokuapp.com",
@@ -14,7 +14,7 @@ const request = axios.create({
 
 request.interceptors.request.use((config) => {
   if (getToken() || token) {
-    config.headers.Authorization = `Bearer ${getToken() || tokenLocal}`;
+    config.headers.Authorization = `Bearer ${getToken() || token}`;
   } else {
     delete config.headers.Authorization;
   }

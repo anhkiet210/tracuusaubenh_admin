@@ -57,7 +57,7 @@ export default function Login() {
       }
 
       if (res?.code === "ERR_BAD_RESPONSE") {
-        enqueueSnackbar("Lỗi server!", {
+        enqueueSnackbar(res?.response?.data?.message, {
           variant: "error",
           autoHideDuration: 2000,
         });

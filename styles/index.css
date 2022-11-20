@@ -35,5 +35,5 @@
 }
 
 .btn-submit{
-    @apply py-2 px-4 text-base uppercase font-medium text-white rounded-md
+    @apply py-2 px-4 text-sm uppercase font-medium text-white rounded-md
 }

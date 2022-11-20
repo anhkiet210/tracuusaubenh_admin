@@ -8,3 +8,12 @@ export const getAllCrops = async () => {
     return error;
   }
 };
+
+export const createCrop = async (info) => {
+  try {
+    const res = await request.post("/api/crop/create", info);
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
