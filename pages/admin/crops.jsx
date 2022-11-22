@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { useSnackbar } from "notistack";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import * as yup from "yup";
 
 //func
 import { addCrops } from "../../redux/slice/cropSlice";
+import { setLoading } from "../../redux/slice/loadingSlice";
 
 // components
 import CardTable from "../../components/Cards/CardTable.jsx";
@@ -15,11 +16,10 @@ import Modal from "../../components/Modal/index.jsx";
 import Spinner from "../../components/Spinner";
 
 // layout for page
-import Admin from "../../layouts/Admin.jsx";
 import ErrorMessage from "../../components/ErrorMessage/index.jsx";
-import { createCrop } from "../../services/cropService.js";
-import { flattenDiagnosticMessageText } from "typescript";
 import Paginationtable from "../../components/PaginationTable";
+import Admin from "../../layouts/Admin.jsx";
+import { createCrop } from "../../services/cropService.js";
 
 const thead = [
   {
@@ -38,16 +38,17 @@ const thead = [
 
 export default function Crops() {
   const crops = useSelector((state) => state.crop.allCrops);
+  const loading = useSelector((state) => state.loading.loading);
+  // console.log("crops: ", crops);
   const [showModal, setShowModal] = useState(false);
   const [imgView, setImgView] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
   const itemPerPage = 5;
   const totalPage = Math.ceil(crops?.length / itemPerPage);
-  // const currentPage = 1;
   const lastIndex = currentPage * itemPerPage;
   const firstIndex = lastIndex - itemPerPage;
 
@@ -110,20 +111,18 @@ export default function Crops() {
 
   const handleSubmitForm = async (data) => {
     try {
-      // loading.current = true;
-      setLoading(true);
+      dispatch(setLoading(true));
       const formData = new FormData();
       formData.append("cropName", data.name);
       formData.append("file", data.img[0]);
       formData.append("shortDes", data.shortDes);
       const res = await createCrop(formData);
-      // console.log("res: ", res?.response?.data?.message);
       if (res?.code === "ERR_NETWORK") {
         enqueueSnackbar("Lỗi kết nối server!", {
           variant: "error",
           autoHideDuration: 2000,
         });
-        setLoading(false);
+        dispatch(setLoading(false));
         return;
       }
 
@@ -132,7 +131,7 @@ export default function Crops() {
           variant: "error",
           autoHideDuration: 2000,
         });
-        setLoading(false);
+        dispatch(setLoading(false));
         return;
       }
 
@@ -141,7 +140,7 @@ export default function Crops() {
           variant: "error",
           autoHideDuration: 2000,
         });
-        setLoading(false);
+        dispatch(setLoading(false));
         return;
       }
       dispatch(addCrops(res?.data));
@@ -150,12 +149,10 @@ export default function Crops() {
         autoHideDuration: 2000,
       });
       // loading.current = false;
-      setLoading(false);
+      dispatch(setLoading(false));
       handCloseModal();
-      reset({ name: "", img: "", shortDes: "" });
     } catch (error) {
-      // loading.current = false;
-      setLoading(false);
+      dispatch(setLoading(false));
       enqueueSnackbar(error.message, {
         variant: "error",
         autoHideDuration: 2000,
@@ -170,6 +167,7 @@ export default function Crops() {
             showBtnAdd={"Thêm loại cây trồng"}
             thead={thead}
             action={handShowModal}
+            name="Danh sách các loại cây trồng"
           >
             {crops &&
               crops.slice(firstIndex, lastIndex).map((item, index) => (
@@ -179,16 +177,18 @@ export default function Crops() {
                     index % 2 === 0 ? "bg-white" : "bg-slate-100"
                   } hover:bg-slate-300 trasition duration-300`}
                 >
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-2"></td>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-2">
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap max-w-md py-2">
+                    {item?.tenloai}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap min-w-12 py-2">
                     <img
-                      src="/img/bootstrap.jpg"
+                      src={item?.anh}
                       className="h-12 w-12 bg-white rounded-full border"
                       alt="..."
                     ></img>{" "}
                   </td>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-2">
-                    $2,500 USD
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-wrap max-w-lg py-2">
+                    {item?.mota}
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-2 text-right">
                     <TableDropdown />

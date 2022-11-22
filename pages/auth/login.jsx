@@ -43,10 +43,10 @@ export default function Login() {
         setToken(res.accessToken);
         localStorage.setItem("Token", res?.accessToken);
         router.push("/admin/dashboard");
-        enqueueSnackbar(res.message, {
-          variant: "success",
-          autoHideDuration: 2000,
-        });
+        // enqueueSnackbar(res.message, {
+        //   variant: "success",
+        //   autoHideDuration: 2000,
+        // });
       }
 
       if (res?.code === "ERR_NETWORK") {

@@ -9,20 +9,20 @@ function Paginationtable({
 }) {
   return (
     <>
-      <div class="flex flex-col items-center">
+      <div className="flex flex-col items-center">
         {/* Help text */}
-        <span class="text-sm text-gray-700 dark:text-gray-400">
+        <span className="text-sm text-gray-700 dark:text-gray-400">
           Showing{" "}
-          <span class="font-semibold text-gray-900">{firstIndex + 1}</span> to{" "}
-          <span class="font-semibold text-gray-900 ">
+          <span className="font-semibold text-gray-900">{firstIndex + 1}</span> to{" "}
+          <span className="font-semibold text-gray-900 ">
             {lastIndex < total ? lastIndex : total}
           </span>{" "}
-          of <span class="font-semibold text-gray-900">{total}</span> Entries
+          of <span className="font-semibold text-gray-900">{total}</span> Entries
         </span>
-        <div class="inline-flex mt-2 xs:mt-0">
+        <div className="inline-flex mt-2 xs:mt-0">
           {/* Buttons  */}
           <button
-            class={`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-slate-800 rounded-l hover:bg-slate-900 ${
+            className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-slate-800 rounded-l hover:bg-slate-900 ${
               currentPage === 1 && "disabled:bg-slate-300"
             }`}
             onClick={handlePrePage}
@@ -30,7 +30,7 @@ function Paginationtable({
           >
             <svg
               aria-hidden="true"
-              class="w-5 h-5 mr-2"
+              className="w-5 h-5 mr-2"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +43,7 @@ function Paginationtable({
             </svg>
           </button>
           <button
-            class={`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-slate-800 border-0 border-l border-slate-700 rounded-r hover:bg-gray-90 ${
+            className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-slate-800 border-0 border-l border-slate-700 rounded-r hover:bg-gray-90 ${
               currentPage === totalPage && "disabled:bg-slate-300"
             }`}
             onClick={handleNextPage}
@@ -51,7 +51,7 @@ function Paginationtable({
           >
             <svg
               aria-hidden="true"
-              class="w-5 h-5 ml-2"
+              className="w-5 h-5 ml-2"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"

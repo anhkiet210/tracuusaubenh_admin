@@ -9,10 +9,13 @@ const pestSlice = createSlice({
     setAllPests: (state, action) => {
       state.allPests = action.payload;
     },
+    addPest: (state, action) => {
+      state.allPests = [...state.allPests, action.payload];
+    },
   },
 });
 
 const { reducer, actions } = pestSlice;
 
-export const { setAllPests } = actions;
+export const { setAllPests, addPest } = actions;
 export default reducer;

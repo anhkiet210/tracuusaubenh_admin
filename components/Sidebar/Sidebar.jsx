@@ -202,6 +202,30 @@ export default function Sidebar() {
                 </Link>
               </li>
 
+              <li className="items-center">
+                <Link href="/admin/pesticide">
+                  <a
+                    href="#pablo"
+                    className={
+                      "text-xs uppercase py-3 font-bold block " +
+                      (router.pathname.indexOf("/admin/pesticide") !== -1
+                        ? "text-slate-900 hover:text-slate-600"
+                        : "text-slate-400 hover:text-slate-700")
+                    }
+                  >
+                    <i
+                      className={
+                        "fas fa-table mr-2 text-sm " +
+                        (router.pathname.indexOf("/admin/pesticide") !== -1
+                          ? "opacity-75"
+                          : "text-slate-300")
+                      }
+                    ></i>{" "}
+                    Quản lý thuốc đặc trị
+                  </a>
+                </Link>
+              </li>
+
               {/* <li className="items-center">
                 <Link href="/admin/maps">
                   <a
