@@ -18,3 +18,4 @@ export const getInfo = async () => {
     return error;
   }
 };
+

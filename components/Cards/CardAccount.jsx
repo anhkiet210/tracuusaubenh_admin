@@ -9,8 +9,7 @@ import ErrorMessage from "../ErrorMessage";
 // components
 import Spinner from "../Spinner";
 
-export default function CardAccount() {
-  const user = useSelector((state) => state.auth.currentUser);
+export default function CardAccount({ user }) {
   console.log("user: ", user);
   const [imgView, setImgView] = useState("");
 
@@ -73,12 +72,6 @@ export default function CardAccount() {
             <h6 className="text-slate-700 text-xl font-bold">
               Tài khoản của tôi
             </h6>
-            {/* <button
-              className="bg-slate-700 active:bg-slate-600 text-white font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-              type="button"
-            >
-              Settings
-            </button> */}
           </div>
         </div>
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
@@ -89,10 +82,7 @@ export default function CardAccount() {
             <div className="flex flex-wrap">
               <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-slate-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
+                  <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
                     Họ tên
                   </label>
                   <input
@@ -107,16 +97,12 @@ export default function CardAccount() {
               </div>
               <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-slate-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
+                  <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
                     Email
                   </label>
                   <input
                     type="email"
                     className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    // defaultValue="anhkietk053@gmail.com"
                     disabled
                     {...register("email")}
                   />
@@ -124,10 +110,7 @@ export default function CardAccount() {
               </div>
               <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-slate-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
+                  <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
                     Số điện thoại
                   </label>
                   <input
@@ -141,10 +124,55 @@ export default function CardAccount() {
                   )}
                 </div>
               </div>
+              <div className="w-full lg:w-6/12 px-4 mt-3">
+                <div className="relative w-full mb-3">
+                  <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
+                    Mật khẩu hiện tại
+                  </label>
+                  <input
+                    {...register("password")}
+                    type="password"
+                    className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  />
+                  {errors?.password && (
+                    <ErrorMessage mess={errors?.password?.message} />
+                  )}
+                </div>
+              </div>
+              <div className="w-full lg:w-6/12 px-4 mt-3">
+                <div className="relative w-full mb-3">
+                  <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
+                    Mật khẩu mới
+                  </label>
+                  <input
+                    {...register("newPassword")}
+                    type="password"
+                    className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  />
+                  {errors?.newPassword && (
+                    <ErrorMessage mess={errors?.newPassword?.message} />
+                  )}
+                </div>
+              </div>
+              <div className="w-full lg:w-6/12 px-4 mt-3">
+                <div className="relative w-full mb-3">
+                  <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
+                    Xác nhận mật khẩu mới
+                  </label>
+                  <input
+                    {...register("comfirmPassword")}
+                    type="password"
+                    className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  />
+                  {errors?.comfirmPassword && (
+                    <ErrorMessage mess={errors?.comfirmPassword?.message} />
+                  )}
+                </div>
+              </div>
               <div className="w-full px-4 ">
                 <div className="form-group w-full lg:w-6/12">
                   <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
-                    Hãy chọn ảnh cho loại cây trồng này
+                    Ảnh đại diện
                   </label>
                   <div className="flex items-center justify-center w-full gap-4 duration-200">
                     {!watch("img") || watch("img").length === 0 ? (

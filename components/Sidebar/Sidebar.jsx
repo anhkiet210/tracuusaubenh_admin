@@ -23,11 +23,11 @@ export default function Sidebar() {
           {/* Brand */}
           <Link href="/admin/dashboard">
             <a
-              href="#pablo"
+              href="#ak"
               className="md:block text-left md:pb-2 text-slate-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold "
             >
               <img
-                src="https://res.cloudinary.com/ak-tracuusaubenh/image/upload/v1668310702/ak-tracuusaubenh/Screenshot_2022-09-02_151147-removebg-preview_pu5byn.png"
+                src="https://res.cloudinary.com/ak210/image/upload/v1668310702/ak-tracuusaubenh/Screenshot_2022-09-02_151147-removebg-preview_pu5byn.png"
                 alt=""
               />
             </a>
