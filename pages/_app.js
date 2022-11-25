@@ -42,10 +42,10 @@ export default class MyApp extends App {
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
-          <title>tracuusaubenh</title>
+          <title>tracuusaubenh-admin</title>
           <link
             rel="shortcut icon"
-            href="https://res.cloudinary.com/ak-tracuusaubenh/image/upload/v1667751701/ak-tracuusaubenh/Screenshot_2022-09-02_152018-removebg-preview_1_meicoh.png"
+            href="https://res.cloudinary.com/ak210/image/upload/v1667751701/ak-tracuusaubenh/Screenshot_2022-09-02_152018-removebg-preview_1_meicoh.png"
           />
           <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
         </Head>
