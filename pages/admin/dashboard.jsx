@@ -1,17 +1,20 @@
-import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
 
 // components
-
 import CardLineChart from "../../components/Cards/CardLineChart.jsx";
 import CardBarChart from "../../components/Cards/CardBarChart.jsx";
 import CardPageVisits from "../../components/Cards/CardPageVisits.jsx";
 import CardSocialTraffic from "../../components/Cards/CardSocialTraffic.jsx";
-import TableDropdown from "../../components/Dropdowns/TableDropdown.jsx";
+import CardTable from "../../components/Cards/CardTable.jsx";
+import ModalPostDetail from "../../components/Modal/ModalPostDetail";
+
+//func
+import { setShowModalPostDetail } from "../../redux/slice/modalSlice.js";
+import { setPostDetail } from "../../redux/slice/postSlice.js";
 
 // layout for page
-
 import Admin from "../../layouts/Admin.jsx";
-import CardTable from "../../components/Cards/CardTable.jsx";
 
 const thead = [
   {
@@ -33,6 +36,20 @@ const thead = [
 ];
 
 export default function Dashboard() {
+  const allPostPending = useSelector((state) => state.post.allPostPending);
+  const postDetail = useSelector((state) => state.post.postDetail);
+  const showModalPostDetail = useSelector(
+    (state) => state.modal.showModalPostDetail
+  );
+  console.log("showModalPostDetail: ", showModalPostDetail);
+  const dispatch = useDispatch();
+
+  const handleShowPostDetail = (info) => {
+    dispatch(setShowModalPostDetail(true));
+    dispatch(setPostDetail(info));
+    // console.log("info: ", info);
+  };
+
   return (
     <>
       <div className="flex flex-wrap">
@@ -52,37 +69,45 @@ export default function Dashboard() {
         </div>
         <div className="w-full  px-4">
           <CardTable name="Bài viết chờ duyệt" thead={thead}>
-            <tr>
-              <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
-                <span
-                // className={
-                //   "ml-3 font-bold " +
-                //   +(color === "light" ? "text-slate-600" : "text-white")
-                // }
-                >
-                  Argon Design System
-                </span>
-              </th>
-              <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                <img
-                  src="/img/bootstrap.jpg"
-                  className="h-12 w-12 bg-white rounded-full border"
-                  alt="..."
-                ></img>{" "}
-              </td>
-              <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                <i className="fas fa-circle text-orange-500 mr-2"></i> Chờ
-                duyệt...
-              </td>
-              <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                $2,500 USD
-              </td>
-              <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                <TableDropdown />
-              </td>
-            </tr>
+            {allPostPending &&
+              allPostPending.map((item) => {
+                const post = item?.post;
+                return (
+                  <tr key={item?.post?._id}>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {item?.post?.tieude}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <img
+                        src={item?.post?.anh}
+                        className="h-12 w-12 bg-white rounded-full border object-cover"
+                        alt="..."
+                      />{" "}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <i className="fas fa-circle text-orange-500 mr-2"></i>{" "}
+                      {item?.post?.trangthai}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {item?.user?.hoten}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+                      <button
+                        className="px-3 py-2 border border-indigo-500 text-indigo-500 rounded-lg duration-300 hover:text-white hover:bg-indigo-500"
+                        onClick={() => handleShowPostDetail(post)}
+                      >
+                        Chi tiết
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
           </CardTable>
         </div>
+        {/* <ModalPostDetail /> */}
+        {showModalPostDetail && postDetail && (
+          <ModalPostDetail post={postDetail} />
+        )}
       </div>
     </>
   );

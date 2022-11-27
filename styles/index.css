@@ -34,6 +34,11 @@
   @apply border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150;
 }
 
-.btn-submit{
-    @apply py-2 px-4 text-sm uppercase font-medium text-white rounded-md
+.btn-submit {
+  @apply py-2 px-4 text-sm uppercase font-medium text-white rounded-md duration-300 hover:opacity-75;
+}
+
+.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-blurred,
+.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-focused {
+  @apply min-h-[500px];
 }

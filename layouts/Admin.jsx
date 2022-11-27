@@ -2,10 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
+
+//func
 import {
   setInfoCurrentUser,
   setInfoAllUsers,
 } from "../redux/slice/authSlice.js";
+import { setAllPests } from "../redux/slice/pestSlice.js";
+import { setAllPostPending, setPostPending } from "../redux/slice/postSlice";
+import { setAllCrops } from "../redux/slice/cropSlice.js";
+import { getAllCrops } from "../services/cropService.js";
+import { getAllPostPending } from "../services/postService.js";
+import { getInfo } from "../services/authService.js";
+import { getAllUser } from "../services/userService.js";
+import { getAllPests } from "../services/pestService.js";
 
 // components
 
@@ -13,13 +23,7 @@ import AdminNavbar from "../components/Navbars/AdminNavbar.jsx";
 import Sidebar from "../components/Sidebar/Sidebar.jsx";
 import HeaderStats from "../components/Headers/HeaderStats.jsx";
 import FooterAdmin from "../components/Footers/FooterAdmin.jsx";
-import { getInfo } from "../services/authService.js";
-import { getAllUser } from "../services/userService.js";
-import { getAllPests } from "../services/pestService.js";
-import { setAllPests } from "../redux/slice/pestSlice.js";
 import { getToken } from "../utils/jwt.js";
-import { getAllCrops } from "../services/cropService.js";
-import { setAllCrops } from "../redux/slice/cropSlice.js";
 
 export default function Admin({ children }) {
   const dispatch = useDispatch();
@@ -123,6 +127,35 @@ export default function Admin({ children }) {
     }
   };
 
+  const handleGetPostPending = async () => {
+    try {
+      const res = await getAllPostPending();
+      // console.log("ok: ", res);
+      if (res?.success) {
+        dispatch(setAllPostPending(res?.data));
+      }
+
+      if (res?.code === "ERR_NETWORK") {
+        enqueueSnackbar("Lỗi kết nối server!", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+
+      if (res?.code === "ERR_BAD_RESPONSE") {
+        enqueueSnackbar("Lỗi server!", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+    } catch (error) {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    }
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (!localStorage.getItem("Token")) {
@@ -148,6 +181,10 @@ export default function Admin({ children }) {
 
   useEffect(() => {
     handleGetAllCrops();
+  }, []);
+
+  useEffect(() => {
+    handleGetPostPending();
   }, []);
 
   return (

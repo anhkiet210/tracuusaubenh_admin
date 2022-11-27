@@ -2,12 +2,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 // components
-
 import CardStats from "../Cards/CardStats.jsx";
 
 export default function HeaderStats() {
   const allUsers = useSelector((state) => state.auth.allUsers);
   const allPests = useSelector((state) => state.pest.allPests);
+  const allPostPending = useSelector((state) => state.post.allPostPending);
+  // console.log("post pending: ", allPostPending);
   return (
     <>
       {/* Header */}
@@ -19,7 +20,7 @@ export default function HeaderStats() {
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
                   statSubtitle="bài viết chờ duyệt"
-                  statTitle="350,897"
+                  statTitle={allPostPending?.length}
                   statIconName="far fa-newspaper"
                   statIconColor="bg-red-500"
                   // statPercentColor="text-emerald-500"

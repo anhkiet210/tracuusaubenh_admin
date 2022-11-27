@@ -42,7 +42,6 @@ export default function Crops() {
   // console.log("crops: ", crops);
   const [showModal, setShowModal] = useState(false);
   const [imgView, setImgView] = useState("");
-  // const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
