@@ -55,7 +55,7 @@ export default function Tables() {
     <>
       <div className="flex flex-wrap mt-4">
         <div className="w-full mb-12 px-4">
-          <CardTable thead={thead} name='Danh sách người dùng'>
+          <CardTable thead={thead} name="Danh sách người dùng">
             {allUsers?.map((user) => (
               <tr key={user._id}>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap py-4">
@@ -75,7 +75,9 @@ export default function Tables() {
                   ></img>{" "}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap py-4 text-right">
-                  <TableDropdown />
+                  <button className="px-3 py-2 border border-red-600 text-red-600 rounded-lg duration-300 hover:text-white hover:bg-red-600">
+                    Xóa
+                  </button>
                 </td>
               </tr>
             ))}

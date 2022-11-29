@@ -42,7 +42,7 @@ export default function Pesticide() {
         <div className="w-full mb-12 px-4">
           <CardTable
             thead={thead}
-            showBtnAdd="Thêm bệnh"
+            showBtnAdd="Thêm thuốc"
             action={handShowModal}
             name="Danh sách thuốc đặc trị"
           >
