@@ -1263,6 +1263,14 @@ select {
   max-height: 100%;
 }
 
+.max-h-9 {
+  max-height: 2.25rem;
+}
+
+.max-h-24 {
+  max-height: 6rem;
+}
+
 .min-h-screen-75 {
   min-height: 75vh;
 }
@@ -2380,6 +2388,13 @@ select {
 
 .ease-linear {
   transition-timing-function: linear;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 * {

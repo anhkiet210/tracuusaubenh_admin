@@ -31,6 +31,7 @@ const thead = [
 ];
 
 export default function Pesticide() {
+  const allPesticides = useSelector((state) => state.pesticide.allPesticides);
   const allPests = useSelector((state) => state.pest.allPests);
   const [showModal, setShowModal] = useState(false);
   const handShowModal = () => setShowModal(true);
@@ -46,29 +47,30 @@ export default function Pesticide() {
             action={handShowModal}
             name="Danh sách thuốc đặc trị"
           >
-            {allPests?.map((item) => (
-              <tr key={item.pest._id}>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {item?.pest.ten}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <img
-                    src={item?.pest.anh}
-                    className="h-12 w-12 bg-white rounded-full border"
-                    alt="..."
-                  ></img>{" "}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {item?.crop.tenloai}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs p-4 max-w-xs">
-                  {item?.pest.trieuchungchitiet}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                  <TableDropdown />
-                </td>
-              </tr>
-            ))}
+            {allPesticides.length > 0 &&
+              allPesticides?.map((item) => (
+                <tr key={item.pest._id}>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {item?.pest.ten}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    <img
+                      src={item?.pest.anh}
+                      className="h-12 w-12 bg-white rounded-full border"
+                      alt="..."
+                    ></img>{" "}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {item?.crop.tenloai}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs p-4 max-w-xs">
+                    {item?.pest.trieuchungchitiet}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+                    <TableDropdown />
+                  </td>
+                </tr>
+              ))}
           </CardTable>
         </div>
         {showModal && (

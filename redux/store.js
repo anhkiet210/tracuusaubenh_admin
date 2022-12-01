@@ -5,6 +5,7 @@ import cropSlice from "./slice/cropSlice";
 import loadingSlice from "./slice/loadingSlice";
 import postSlice from "./slice/postSlice";
 import modalSlice from "./slice/modalSlice";
+import pesticideSlice from "./slice/pesticideSlice";
 
 const rootReducer = {
   auth: authSlice,
@@ -13,6 +14,7 @@ const rootReducer = {
   loading: loadingSlice,
   post: postSlice,
   modal: modalSlice,
+  pesticide: pesticideSlice,
 };
 
 const store = configureStore({

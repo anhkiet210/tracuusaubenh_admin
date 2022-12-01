@@ -136,20 +136,26 @@ export default function Pests() {
           variant: "warning",
           autoHideDuration: 3000,
         });
+        dispatch(setLoading(false));
         return;
       }
 
-      const info = {
+      const info = JSON.stringify({
         la: data.la || "",
         than: data.than || "",
         re: data.re || "",
-      };
+      });
+
+      console.log("info: ", info);
       const formData = new FormData();
       formData.append("pestName", data.name);
       formData.append("detailedSymptoms", data.detailedSymptoms);
-      formData.append("identificationSymptoms", info);
+      // formData.append("identificationSymptoms", info);
       formData.append("file", data.img[0]);
       formData.append("idCrop", data.idCrop);
+      formData.append("la", data.la);
+      formData.append("than", data.than);
+      formData.append("re", data.re);
 
       const res = await createPest(formData);
 
@@ -180,7 +186,7 @@ export default function Pests() {
         return;
       }
       dispatch(addPest(res?.data));
-      // console.log("submit form: ", res);
+      console.log("submit form: ", res);
       dispatch(setLoading(false));
       handCloseModal();
       enqueueSnackbar("Thêm thông tin sâu bệnh thành công.", {
@@ -370,7 +376,11 @@ export default function Pests() {
                     <ErrorMessage mess={errors?.idCrop?.message} />
                   )}
                 </div>
-                <button type="submit" className="btn-submit bg-sky-500 mt-3">
+                <button
+                  type="submit"
+                  className="btn-submit bg-sky-500 mt-3 felx items-center justify-center"
+                  disabled={loading}
+                >
                   {loading ? <Spinner /> : "Thêm"}
                 </button>
               </form>
