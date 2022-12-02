@@ -1,11 +1,10 @@
-import request from "../utils/request";
+import { get } from "../utils/request";
 
 export const getAllUser = async () => {
   try {
-    const res = await request.get("/api/users");
-    return res.data;
+    const res = await get("/api/users");
+    return res;
   } catch (error) {
     return error;
   }
 };
-

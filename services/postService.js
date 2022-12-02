@@ -1,9 +1,9 @@
-import request from "../utils/request";
+import { put, get } from "../utils/request";
 
 export const getAllPostPending = async () => {
   try {
-    const res = await request.get("/api/post/get-post-pending");
-    return res.data;
+    const res = await get("/api/post/get-all-post-pending");
+    return res;
   } catch (error) {
     return error;
   }
@@ -11,8 +11,8 @@ export const getAllPostPending = async () => {
 
 export const acceptPost = async (id) => {
   try {
-    const res = await request.put(`/api/post/accept-post/${id}`);
-    return res.data;
+    const res = await put(`/api/post/accept-post/${id}`);
+    return res;
   } catch (error) {
     console.log(error);
     return error;
@@ -21,8 +21,8 @@ export const acceptPost = async (id) => {
 
 export const denyPost = async (id) => {
   try {
-    const res = await request.put(`/api/post/deny-post/${id}`);
-    return res.data;
+    const res = await put(`/api/post/deny-post/${id}`);
+    return res;
   } catch (error) {
     return error;
   }
