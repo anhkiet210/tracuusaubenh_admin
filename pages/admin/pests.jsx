@@ -46,9 +46,9 @@ export default function Pests() {
   const allCrops = useSelector((state) => state.crop.allCrops);
   const loading = useSelector((state) => state.loading.loading);
   const [showModal, setShowModal] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const [imgView, setImgView] = useState("");
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
 
   // console.log("all pest: ", allCrops);
 
@@ -212,39 +212,42 @@ export default function Pests() {
             name="Danh sách sâu bệnh"
             action={handShowModal}
           >
-            {allPests?.map((item) => (
-              <tr key={item.pest._id}>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {item?.pest.ten}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <img
-                    src={item?.pest.anh}
-                    className="h-12 w-12 bg-white rounded-full border"
-                    alt="..."
-                  ></img>{" "}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {item?.crop.tenloai}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs p-4 max-w-xs">
-                  {item?.pest.trieuchungchitiet}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                  <TableDropdown />
-                </td>
-              </tr>
-            ))}
+            {allPests.length > 0 &&
+              allPests?.map((item) => (
+                <tr key={item.pest._id}>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {item?.pest.ten}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    <img
+                      src={item?.pest.anh}
+                      className="h-12 w-12 bg-white rounded-full border"
+                      alt="..."
+                    ></img>{" "}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {item?.crop.tenloai}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs p-4 max-w-xs">
+                    {item?.pest.trieuchungchitiet}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+                    <TableDropdown />
+                  </td>
+                </tr>
+              ))}
           </CardTable>
-          <Paginationtable
-            firstIndex={firstIndex}
-            lastIndex={lastIndex}
-            total={allPests?.length}
-            handleNextPage={handleNextPage}
-            handlePrePage={handlePrePage}
-            totalPage={totalPage}
-            currentPage={currentPage}
-          />
+          {allPests.length > 0 && allPests && (
+            <Paginationtable
+              firstIndex={firstIndex}
+              lastIndex={lastIndex}
+              total={allPests?.length}
+              handleNextPage={handleNextPage}
+              handlePrePage={handlePrePage}
+              totalPage={totalPage}
+              currentPage={currentPage}
+            />
+          )}
         </div>
         {showModal && (
           <Modal title="Thêm Bệnh" handleClose={handCloseModal}>

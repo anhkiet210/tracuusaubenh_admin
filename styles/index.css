@@ -42,3 +42,7 @@
 .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-focused {
   @apply h-[500px] overflow-y-scroll;
 }
+
+.btn-disabled {
+  @apply disabled:bg-slate-300 disabled:hover:bg-slate-300 disabled:border-slate-300 disabled:text-white;
+}

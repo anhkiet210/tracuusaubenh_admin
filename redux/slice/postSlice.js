@@ -13,9 +13,9 @@ const postSlice = createSlice({
     setPostDetail: (state, action) => {
       state.postDetail = action.payload;
     },
-    removePostPending: (state, action) => {
+    deletePostPending: (state, action) => {
       state.allPostPending = state.allPostPending.filter(
-        (item) => item._id !== action.payload
+        (item) => item.post._id !== action.payload
       );
     },
   },
@@ -23,6 +23,10 @@ const postSlice = createSlice({
 
 const { reducer, actions } = postSlice;
 
-export const { setAllPostPending, setPostDetail, removePostPending } = actions;
+export const {
+  setAllPostPending,
+  setPostDetail,
+  deletePostPending,
+} = actions;
 
 export default reducer;

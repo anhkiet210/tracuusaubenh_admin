@@ -9,9 +9,9 @@ export const getAllPostPending = async () => {
   }
 };
 
-export const acceptPost = async (id) => {
+export const changeStatusPost = async (id, option) => {
   try {
-    const res = await put(`/api/post/accept-post/${id}`);
+    const res = await put(`/api/post/change-status-post/${id}`, option);
     return res;
   } catch (error) {
     console.log(error);
