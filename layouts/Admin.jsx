@@ -24,6 +24,8 @@ import Sidebar from "../components/Sidebar/Sidebar.jsx";
 import HeaderStats from "../components/Headers/HeaderStats.jsx";
 import FooterAdmin from "../components/Footers/FooterAdmin.jsx";
 import { getToken } from "../utils/jwt.js";
+import { getAllPesticides } from "../services/pesticideService.js";
+import { setAllPesticide } from "../redux/slice/pesticideSlice.js";
 
 export default function Admin({ children }) {
   const dispatch = useDispatch();
@@ -49,10 +51,12 @@ export default function Admin({ children }) {
       }
 
       if (res?.code === "ERR_BAD_RESPONSE") {
-        enqueueSnackbar("Lỗi server!", {
+        enqueueSnackbar(res?.response?.data?.message, {
           variant: "error",
           autoHideDuration: 2000,
         });
+        localStorage.removeItem("Token");
+        return;
       }
 
       if (res?.success) {
@@ -140,6 +144,7 @@ export default function Admin({ children }) {
           variant: "error",
           autoHideDuration: 2000,
         });
+        return
       }
 
       if (res?.code === "ERR_BAD_RESPONSE") {
@@ -147,6 +152,38 @@ export default function Admin({ children }) {
           variant: "error",
           autoHideDuration: 2000,
         });
+        return 
+      }
+    } catch (error) {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    }
+  };
+
+  const handleGetAllPesticides = async () => {
+    try {
+      const res = await getAllPesticides();
+      // console.log("ok: ", res);
+      if (res?.success) {
+        dispatch(setAllPesticide(res?.data));
+      }
+
+      if (res?.code === "ERR_NETWORK") {
+        enqueueSnackbar("Lỗi kết nối server!", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+        return;
+      }
+
+      if (res?.code === "ERR_BAD_RESPONSE") {
+        enqueueSnackbar("Lỗi server!", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+        return;
       }
     } catch (error) {
       enqueueSnackbar(error.message, {
@@ -185,6 +222,10 @@ export default function Admin({ children }) {
 
   useEffect(() => {
     handleGetPostPending();
+  }, []);
+
+  useEffect(() => {
+    handleGetAllPesticides();
   }, []);
 
   return (

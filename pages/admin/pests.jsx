@@ -128,7 +128,7 @@ export default function Pests() {
     });
   };
 
-  const handldeSubmitForm = async (data) => {
+  const handleSubmitForm = async (data) => {
     try {
       dispatch(setLoading(true));
       if (!data.la && !data.than && !data.re) {
@@ -150,7 +150,6 @@ export default function Pests() {
       const formData = new FormData();
       formData.append("pestName", data.name);
       formData.append("detailedSymptoms", data.detailedSymptoms);
-      // formData.append("identificationSymptoms", info);
       formData.append("file", data.img[0]);
       formData.append("idCrop", data.idCrop);
       formData.append("la", data.la);
@@ -186,7 +185,7 @@ export default function Pests() {
         return;
       }
       dispatch(addPest(res?.data));
-      console.log("submit form: ", res);
+      // console.log("submit form: ", res);
       dispatch(setLoading(false));
       handCloseModal();
       enqueueSnackbar("Thêm thông tin sâu bệnh thành công.", {
@@ -252,7 +251,7 @@ export default function Pests() {
         {showModal && (
           <Modal title="Thêm Bệnh" handleClose={handCloseModal}>
             <div className="">
-              <form onSubmit={handleSubmit(handldeSubmitForm)}>
+              <form onSubmit={handleSubmit(handleSubmitForm)}>
                 <div className="form-group">
                   <label className="form-label" htmlFor="grid-password">
                     Tên bệnh

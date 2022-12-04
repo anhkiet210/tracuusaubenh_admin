@@ -7,12 +7,15 @@ const pesticideSlice = createSlice({
   },
   reducers: {
     setAllPesticide: (state, action) => {
-      state.allPesticide = action.payload;
+      state.allPesticides = action.payload;
+    },
+    addPesticide: (state, action) => {
+      state.allPesticides = [...state.allPesticides, action.payload];
     },
   },
 });
 
 const { reducer, actions } = pesticideSlice;
 
-export const { setAllPesticide } = actions;
+export const { setAllPesticide, addPesticide } = actions;
 export default reducer;
