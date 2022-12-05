@@ -4,10 +4,13 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
-import ErrorMessage from "../ErrorMessage";
+
+//func
+import { setLoading } from "../../redux/slice/loadingSlice";
 
 // components
 import Spinner from "../Spinner";
+import ErrorMessage from "../ErrorMessage";
 
 export default function CardAccount() {
   const user = useSelector((state) => state.auth.currentUser);
@@ -26,13 +29,26 @@ export default function CardAccount() {
         "Hãy chọn ảnh cho loại cây trồng này!",
         (value) => value && value.length
       ),
+    phone: yup
+      .string()
+      .required("Hãy nhập số điện thoại")
+      .matches("[0-9]{3}[0-9]", "Hãy nhập đúng định dạng số điện thoại!")
+      .length(10, "Số điện thoại phải đủ 10 số!"),
+    password: yup
+      .string()
+      .required("Hãy nhập mật khẩu")
+      .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
+      .max(20, "Mật khẩu không được vượt quá 20 ký tự"),
+    newPassword: yup
+      .string()
+      .nullable(true)
+      // .transform((o, c) => (o === '' ? o : c))
+      .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
+      .max(20, "Mật khẩu không được vượt quá 20 ký tự"),
+    comfirmPassword: yup
+      .string()
+      .oneOf([yup.ref("newPassword"), null], "Mật khẩu xác nhận không đúng"),
   });
-
-  const infoUser = {
-    name: user?.hoten,
-    email: user?.email,
-    phone: user?.sdt,
-  };
 
   const {
     register,
@@ -56,6 +72,17 @@ export default function CardAccount() {
 
   const handleSelectAgain = () => {
     reset({ img: "" });
+  };
+
+  const handleChangeInfo = async (data) => {
+    try {
+      dispatch(setLoading(true));
+    } catch (error) {
+      enqueueSnackbar("Lỗi cập nhật thông tin!", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    }
   };
 
   useEffect(() => {
@@ -126,51 +153,7 @@ export default function CardAccount() {
                   )}
                 </div>
               </div>
-              <div className="w-full lg:w-6/12 md:px-4 mt-3">
-                <div className="relative w-full mb-3">
-                  <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
-                    Mật khẩu hiện tại
-                  </label>
-                  <input
-                    {...register("password")}
-                    type="password"
-                    className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  />
-                  {errors?.password && (
-                    <ErrorMessage mess={errors?.password?.message} />
-                  )}
-                </div>
-              </div>
-              <div className="w-full lg:w-6/12 md:px-4 mt-3">
-                <div className="relative w-full mb-3">
-                  <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
-                    Mật khẩu mới
-                  </label>
-                  <input
-                    {...register("newPassword")}
-                    type="password"
-                    className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  />
-                  {errors?.newPassword && (
-                    <ErrorMessage mess={errors?.newPassword?.message} />
-                  )}
-                </div>
-              </div>
-              <div className="w-full lg:w-6/12 md:px-4 mt-3">
-                <div className="relative w-full mb-3">
-                  <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
-                    Xác nhận mật khẩu mới
-                  </label>
-                  <input
-                    {...register("comfirmPassword")}
-                    type="password"
-                    className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  />
-                  {errors?.comfirmPassword && (
-                    <ErrorMessage mess={errors?.comfirmPassword?.message} />
-                  )}
-                </div>
-              </div>
+
               <div className="w-full md:px-4">
                 <div className="form-group w-full lg:w-6/12">
                   <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
@@ -214,10 +197,62 @@ export default function CardAccount() {
                 </div>
               </div>
             </div>
-            <hr className="mt-6 border-b-1 border-slate-300" />
-            <div className="">
-              <button className="btn-submit bg-sky-500 mt-3">Lưu</button>
+
+            <button className="btn-submit bg-sky-500 mt-3">Lưu</button>
+          </form>
+        </div>
+        <hr className="mt-6 border-b-1 border-slate-300" />
+        <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
+          <form>
+            <h6 className="text-slate-400 text-sm mt-3 mb-6 font-bold uppercase">
+              Đổi mật khẩu
+            </h6>
+            <div className="w-full lg:w-6/12 md:px-4 mt-3">
+              <div className="relative w-full mb-3">
+                <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
+                  Mật khẩu hiện tại
+                </label>
+                <input
+                  {...register("password")}
+                  type="password"
+                  className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                />
+                {errors?.password && (
+                  <ErrorMessage mess={errors?.password?.message} />
+                )}
+              </div>
             </div>
+            <div className="w-full lg:w-6/12 md:px-4 mt-3">
+              <div className="relative w-full mb-3">
+                <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
+                  Mật khẩu mới
+                </label>
+                <input
+                  {...register("newPassword")}
+                  type="password"
+                  className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                />
+                {errors?.newPassword && (
+                  <ErrorMessage mess={errors?.newPassword?.message} />
+                )}
+              </div>
+            </div>
+            <div className="w-full lg:w-6/12 md:px-4 mt-3">
+              <div className="relative w-full mb-3">
+                <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
+                  Xác nhận mật khẩu mới
+                </label>
+                <input
+                  {...register("comfirmPassword")}
+                  type="password"
+                  className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                />
+                {errors?.comfirmPassword && (
+                  <ErrorMessage mess={errors?.comfirmPassword?.message} />
+                )}
+              </div>
+            </div>
+            <button className="btn-submit bg-sky-500 mt-3">Lưu</button>
           </form>
         </div>
       </div>

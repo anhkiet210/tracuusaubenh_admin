@@ -36,4 +36,9 @@ export const put = async (path, option = {}) => {
   return responese.data;
 };
 
+export const deleteMethod = async (path, option = {}) => {
+  const responese = await request.delete(path, option);
+  return responese.data;
+};
+
 export default request;

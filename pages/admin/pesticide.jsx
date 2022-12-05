@@ -173,7 +173,7 @@ export default function Pesticide() {
                   <td className="border-t-0 p-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap min-w-24">
                     <img
                       src={item?.anh}
-                      className="h-12 w-12 bg-white rounded-full border"
+                      className="h-12 w-12 bg-white rounded-full border object-cover"
                       alt="..."
                     ></img>{" "}
                   </td>

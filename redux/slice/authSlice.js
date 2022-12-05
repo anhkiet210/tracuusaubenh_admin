@@ -13,10 +13,15 @@ const authSlice = createSlice({
     setInfoAllUsers: (state, action) => {
       state.allUsers = action.payload;
     },
+    deleteUserRedux: (state, action) => {
+      state.allUsers = state.allUsers.filter(
+        (item) => item._id !== action.payload
+      );
+    },
   },
 });
 
 const { reducer, actions } = authSlice;
 
-export const { setInfoCurrentUser, setInfoAllUsers } = actions;
+export const { setInfoCurrentUser, setInfoAllUsers, deleteUserRedux } = actions;
 export default reducer;
