@@ -11,22 +11,26 @@ import { setLoading } from "../../redux/slice/loadingSlice";
 // components
 import Spinner from "../Spinner";
 import ErrorMessage from "../ErrorMessage";
+import CardChangePassword from "./CardChangePassword";
 
 export default function CardAccount() {
   const user = useSelector((state) => state.auth.currentUser);
-  console.log("user: ", user);
+  const loading = useSelector((state) => state.loading.loading);
+  const setLoadingDeny = useSelector((state) => state.loading.setLoadingDeny);
+  // console.log("user: ", user);
   const [imgView, setImgView] = useState("");
+  const [disabled, setDisabled] = useState(true);
 
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
   const schema = yup.object().shape({
-    name: yup.string().required("Hãy nhập tên của loại cây!"),
+    name: yup.string().required("Hãy nhập họ tên!"),
     img: yup
       .mixed()
       .test(
         "required",
-        "Hãy chọn ảnh cho loại cây trồng này!",
+        "Hãy chọn ảnh đại diện!",
         (value) => value && value.length
       ),
     phone: yup
@@ -34,20 +38,6 @@ export default function CardAccount() {
       .required("Hãy nhập số điện thoại")
       .matches("[0-9]{3}[0-9]", "Hãy nhập đúng định dạng số điện thoại!")
       .length(10, "Số điện thoại phải đủ 10 số!"),
-    password: yup
-      .string()
-      .required("Hãy nhập mật khẩu")
-      .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
-      .max(20, "Mật khẩu không được vượt quá 20 ký tự"),
-    newPassword: yup
-      .string()
-      .nullable(true)
-      // .transform((o, c) => (o === '' ? o : c))
-      .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
-      .max(20, "Mật khẩu không được vượt quá 20 ký tự"),
-    comfirmPassword: yup
-      .string()
-      .oneOf([yup.ref("newPassword"), null], "Mật khẩu xác nhận không đúng"),
   });
 
   const {
@@ -58,9 +48,16 @@ export default function CardAccount() {
     handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      email: user?.email,
+      name: user?.hoten,
+      phone: user?.sdt,
+    },
   });
 
   const imgTest = watch("img");
+  const name = watch("name");
+  const phone = watch("phone");
 
   const handleConvertBase64 = (file) => {
     const reader = new FileReader();
@@ -76,7 +73,8 @@ export default function CardAccount() {
 
   const handleChangeInfo = async (data) => {
     try {
-      dispatch(setLoading(true));
+      // dispatch(setLoading(true));
+      console.log("data: ", data);
     } catch (error) {
       enqueueSnackbar("Lỗi cập nhật thông tin!", {
         variant: "error",
@@ -91,6 +89,14 @@ export default function CardAccount() {
     }
   }, [watch("img")]);
 
+  useEffect(() => {
+    if (name === user?.hoten && phone === user?.sdt && imgTest?.length === 0) {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+  }, [name, phone, imgTest]);
+
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-slate-100 border-0">
@@ -102,7 +108,7 @@ export default function CardAccount() {
           </div>
         </div>
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-          <form>
+          <form onSubmit={handleSubmit(handleChangeInfo)}>
             <h6 className="text-slate-400 text-sm mt-3 mb-6 font-bold uppercase">
               Thông tin tài khoản
             </h6>
@@ -198,63 +204,16 @@ export default function CardAccount() {
               </div>
             </div>
 
-            <button className="btn-submit bg-sky-500 mt-3">Lưu</button>
+            <button
+              className="btn-submit bg-sky-500 mt-3 btn-disabled"
+              disabled={disabled || loading}
+            >
+              Lưu
+            </button>
           </form>
         </div>
         <hr className="mt-6 border-b-1 border-slate-300" />
-        <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-          <form>
-            <h6 className="text-slate-400 text-sm mt-3 mb-6 font-bold uppercase">
-              Đổi mật khẩu
-            </h6>
-            <div className="w-full lg:w-6/12 md:px-4 mt-3">
-              <div className="relative w-full mb-3">
-                <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
-                  Mật khẩu hiện tại
-                </label>
-                <input
-                  {...register("password")}
-                  type="password"
-                  className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                />
-                {errors?.password && (
-                  <ErrorMessage mess={errors?.password?.message} />
-                )}
-              </div>
-            </div>
-            <div className="w-full lg:w-6/12 md:px-4 mt-3">
-              <div className="relative w-full mb-3">
-                <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
-                  Mật khẩu mới
-                </label>
-                <input
-                  {...register("newPassword")}
-                  type="password"
-                  className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                />
-                {errors?.newPassword && (
-                  <ErrorMessage mess={errors?.newPassword?.message} />
-                )}
-              </div>
-            </div>
-            <div className="w-full lg:w-6/12 md:px-4 mt-3">
-              <div className="relative w-full mb-3">
-                <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
-                  Xác nhận mật khẩu mới
-                </label>
-                <input
-                  {...register("comfirmPassword")}
-                  type="password"
-                  className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                />
-                {errors?.comfirmPassword && (
-                  <ErrorMessage mess={errors?.comfirmPassword?.message} />
-                )}
-              </div>
-            </div>
-            <button className="btn-submit bg-sky-500 mt-3">Lưu</button>
-          </form>
-        </div>
+        <CardChangePassword />
       </div>
     </>
   );

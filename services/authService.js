@@ -1,4 +1,4 @@
-import { get, post } from "../utils/request";
+import { get, post, put } from "../utils/request";
 
 export const login = async (info) => {
   try {
@@ -13,6 +13,15 @@ export const login = async (info) => {
 export const getInfo = async () => {
   try {
     const res = await get("/api/admin/get-info");
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const changePassword = async (info) => {
+  try {
+    const res = await put("/api/admin/change-password", info);
     return res;
   } catch (error) {
     return error;
