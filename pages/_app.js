@@ -8,6 +8,7 @@ import store from "../redux/store.js";
 import { SnackbarProvider } from "notistack";
 
 import PageChange from "../components/PageChange/PageChange.jsx";
+import AuthCheck from "../layouts/AuthCheck.jsx";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../styles/tailwind.css";
@@ -53,9 +54,11 @@ export default class MyApp extends App {
           <SnackbarProvider
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
           >
+            {/* <AuthCheck> */}
             <Layout>
               <Component {...pageProps} />
             </Layout>
+            {/* </AuthCheck> */}
           </SnackbarProvider>
         </Provider>
       </React.Fragment>

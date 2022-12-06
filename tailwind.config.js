@@ -25,10 +25,15 @@ module.exports = {
           "0%": { transform: "translateX(50%)", opacity: "0" },
           "100%": { transform: "translateX(0)", opacity: "1" },
         },
+        bloom: {
+          "0%": { height: "0" },
+          "100%": { height: "max-content" },
+        },
       },
       animation: {
         "appear-hand": "appear 0.4s linear",
         "toLeft-hand": "toLeft 0.4s linear",
+        bloom: "bloom 0.4s, linear",
       },
       minHeight: {
         "screen-75": "75vh",

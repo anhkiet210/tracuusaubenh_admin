@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 //func
 import {
@@ -16,6 +16,8 @@ import { getAllPostPending } from "../services/postService.js";
 import { getInfo } from "../services/authService.js";
 import { getAllUser } from "../services/userService.js";
 import { getAllPests } from "../services/pestService.js";
+import { getAllPesticides } from "../services/pesticideService.js";
+import { setAllPesticide } from "../redux/slice/pesticideSlice.js";
 
 // components
 
@@ -23,24 +25,24 @@ import AdminNavbar from "../components/Navbars/AdminNavbar.jsx";
 import Sidebar from "../components/Sidebar/Sidebar.jsx";
 import HeaderStats from "../components/Headers/HeaderStats.jsx";
 import FooterAdmin from "../components/Footers/FooterAdmin.jsx";
-import { getToken } from "../utils/jwt.js";
-import { getAllPesticides } from "../services/pesticideService.js";
-import { setAllPesticide } from "../redux/slice/pesticideSlice.js";
 
 export default function Admin({ children }) {
+  const tokenRedux = useSelector((state) => state.auth.tokenRedux);
   const dispatch = useDispatch();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const [user, setUser] = useState({});
+  const [tokenLocal, setTokenLocal] = useState(null);
+  const token = tokenRedux || tokenLocal;
 
   const getCurrentUser = async () => {
     try {
       const res = await getInfo();
-      if (res?.response?.status === 404) {
+      if (res?.status === 401) {
         enqueueSnackbar("Bạn chưa đăng nhập!", {
           variant: "error",
           autoHideDuration: 2000,
         });
+        localStorage.removeItem("Token");
         router.push("/");
       }
       if (res?.code === "ERR_NETWORK") {
@@ -56,6 +58,7 @@ export default function Admin({ children }) {
           autoHideDuration: 2000,
         });
         localStorage.removeItem("Token");
+        router.push("/");
         return;
       }
 
@@ -144,7 +147,7 @@ export default function Admin({ children }) {
           variant: "error",
           autoHideDuration: 2000,
         });
-        return
+        return;
       }
 
       if (res?.code === "ERR_BAD_RESPONSE") {
@@ -152,7 +155,7 @@ export default function Admin({ children }) {
           variant: "error",
           autoHideDuration: 2000,
         });
-        return 
+        return;
       }
     } catch (error) {
       enqueueSnackbar(error.message, {
@@ -195,18 +198,23 @@ export default function Admin({ children }) {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (!localStorage.getItem("Token")) {
-        router.push("/");
-        enqueueSnackbar("Bạn cần đăng nhập!", {
-          variant: "error",
-          autoHideDuration: 2000,
-        });
-        return;
+      const tokenLocal = localStorage.getItem("Token");
+      if (tokenLocal) {
+        setTokenLocal(tokenLocal);
       } else {
-        getCurrentUser();
+        setTokenLocal(false);
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (token) {
+      getCurrentUser();
+    } else {
+      localStorage.removeItem("Token");
+      router.push("/");
+    }
+  }, [token]);
 
   useEffect(() => {
     handleGetAllUsers();

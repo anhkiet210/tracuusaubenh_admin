@@ -3,8 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    currentUser: {},
+    currentUser: null,
     allUsers: [],
+    tokenRedux: null,
   },
   reducers: {
     setInfoCurrentUser: (state, action) => {
@@ -12,6 +13,9 @@ const authSlice = createSlice({
     },
     setInfoAllUsers: (state, action) => {
       state.allUsers = action.payload;
+    },
+    setTokenRedux: (state, action) => {
+      state.tokenRedux = action.payload;
     },
     deleteUserRedux: (state, action) => {
       state.allUsers = state.allUsers.filter(
@@ -23,5 +27,10 @@ const authSlice = createSlice({
 
 const { reducer, actions } = authSlice;
 
-export const { setInfoCurrentUser, setInfoAllUsers, deleteUserRedux } = actions;
+export const {
+  setInfoCurrentUser,
+  setInfoAllUsers,
+  deleteUserRedux,
+  setTokenRedux,
+} = actions;
 export default reducer;

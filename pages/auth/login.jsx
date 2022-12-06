@@ -8,6 +8,9 @@ import { useSnackbar } from "notistack";
 import { setToken } from "../../utils/jwt";
 import { useRouter } from "next/router";
 import Spinner from "../../components/Spinner";
+import { useDispatch } from "react-redux";
+
+import { setTokenRedux } from "../../redux/slice/authSlice";
 
 // layout for page
 
@@ -15,6 +18,7 @@ export default function Login() {
   const router = useRouter();
   const loadingLogin = useRef(false);
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
   const schema = yup.object().shape({
     email: yup
       .string()
@@ -42,6 +46,7 @@ export default function Login() {
       if (res?.success) {
         setToken(res.accessToken);
         localStorage.setItem("Token", res?.accessToken);
+        dispatch(setTokenRedux(res?.accessToken));
         router.push("/admin/dashboard");
         // enqueueSnackbar(res.message, {
         //   variant: "success",
