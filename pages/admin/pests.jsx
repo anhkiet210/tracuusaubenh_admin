@@ -380,7 +380,7 @@ export default function Pests() {
                 </div>
                 <button
                   type="submit"
-                  className="btn-submit bg-sky-500 mt-3 felx items-center justify-center"
+                  className="btn-submit bg-sky-500 mt-3 felx items-center justify-center btn-disabled"
                   disabled={loading}
                 >
                   {loading ? <Spinner /> : "Thêm"}

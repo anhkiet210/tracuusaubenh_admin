@@ -31,8 +31,6 @@ export default function Admin({ children }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const [tokenLocal, setTokenLocal] = useState(null);
-  const token = tokenRedux || tokenLocal;
 
   const getCurrentUser = async () => {
     try {
@@ -42,7 +40,7 @@ export default function Admin({ children }) {
           variant: "error",
           autoHideDuration: 2000,
         });
-        localStorage.removeItem("Token");
+        // localStorage.removeItem("Token");
         router.push("/");
       }
       if (res?.code === "ERR_NETWORK") {
@@ -57,7 +55,7 @@ export default function Admin({ children }) {
           variant: "error",
           autoHideDuration: 2000,
         });
-        localStorage.removeItem("Token");
+        // localStorage.removeItem("Token");
         router.push("/");
         return;
       }
@@ -199,22 +197,13 @@ export default function Admin({ children }) {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const tokenLocal = localStorage.getItem("Token");
-      if (tokenLocal) {
-        setTokenLocal(tokenLocal);
+      if (!tokenRedux && !tokenLocal) {
+        router.push("/");
       } else {
-        setTokenLocal(false);
+        getCurrentUser();
       }
     }
   }, []);
-
-  useEffect(() => {
-    if (token) {
-      getCurrentUser();
-    } else {
-      localStorage.removeItem("Token");
-      router.push("/");
-    }
-  }, [token]);
 
   useEffect(() => {
     handleGetAllUsers();
