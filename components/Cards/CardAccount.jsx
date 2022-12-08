@@ -7,6 +7,8 @@ import * as yup from "yup";
 
 //func
 import { setLoading } from "../../redux/slice/loadingSlice";
+import { UpdateInfo } from "../../services/authService";
+import { setInfoCurrentUser } from "../../redux/slice/authSlice";
 
 // components
 import Spinner from "../Spinner";
@@ -16,9 +18,6 @@ import CardChangePassword from "./CardChangePassword";
 export default function CardAccount() {
   const user = useSelector((state) => state.auth.currentUser);
   const loading = useSelector((state) => state.loading.loading);
-  const setLoadingDeny = useSelector((state) => state.loading.setLoadingDeny);
-  // console.log("user: ", user);
-  const [imgView, setImgView] = useState("");
   const [disabled, setDisabled] = useState(true);
 
   const dispatch = useDispatch();
@@ -26,13 +25,6 @@ export default function CardAccount() {
 
   const schema = yup.object().shape({
     name: yup.string().required("Hãy nhập họ tên!"),
-    img: yup
-      .mixed()
-      .test(
-        "required",
-        "Hãy chọn ảnh đại diện!",
-        (value) => value && value.length
-      ),
     phone: yup
       .string()
       .required("Hãy nhập số điện thoại")
@@ -44,38 +36,68 @@ export default function CardAccount() {
     register,
     watch,
     reset,
+    setValue,
     formState: { errors },
     handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      email: user?.email,
       name: user?.hoten,
       phone: user?.sdt,
     },
   });
 
-  const imgTest = watch("img");
   const name = watch("name");
   const phone = watch("phone");
 
-  const handleConvertBase64 = (file) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImgView(reader.result.toString());
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleSelectAgain = () => {
-    reset({ img: "" });
-  };
+  useEffect(() => {
+    setValue("name", user?.hoten);
+    setValue("phone", user?.sdt);
+  }, [user]);
 
   const handleChangeInfo = async (data) => {
     try {
-      // dispatch(setLoading(true));
-      console.log("data: ", data);
+      dispatch(setLoading(true));
+      const formData = new FormData();
+      formData.append("name", data.name.trim());
+      formData.append("phone", data.phone.trim());
+      const res = await UpdateInfo(formData);
+      // console.log("res: ", res);
+      if (res?.code === "ERR_NETWORK") {
+        enqueueSnackbar("Lỗi kết nối server!", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+        dispatch(setLoading(false));
+        return;
+      }
+
+      if (res?.code === "ERR_BAD_RESPONSE") {
+        enqueueSnackbar(res?.response?.data?.message, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+        dispatch(setLoading(false));
+        return;
+      }
+
+      if (res?.response?.status === 401) {
+        enqueueSnackbar(res?.response.data.message, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+        dispatch(setLoading(false));
+        return;
+      }
+      dispatch(setInfoCurrentUser(res?.data));
+      enqueueSnackbar(res?.message, {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
+      dispatch(setLoading(false));
+      setDisabled(true);
     } catch (error) {
+      dispatch(setLoading(false));
       enqueueSnackbar("Lỗi cập nhật thông tin!", {
         variant: "error",
         autoHideDuration: 2000,
@@ -84,18 +106,12 @@ export default function CardAccount() {
   };
 
   useEffect(() => {
-    if (imgTest && imgTest.length > 0) {
-      handleConvertBase64(imgTest[0]);
-    }
-  }, [watch("img")]);
-
-  useEffect(() => {
-    if (name === user?.hoten && phone === user?.sdt && imgTest?.length === 0) {
+    if (name === user?.hoten && phone === user?.sdt) {
       setDisabled(true);
     } else {
       setDisabled(false);
     }
-  }, [name, phone, imgTest]);
+  }, [name, phone]);
 
   return (
     <>
@@ -108,7 +124,7 @@ export default function CardAccount() {
           </div>
         </div>
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-          <form onSubmit={handleSubmit(handleChangeInfo)}>
+          <form onSubmit={handleSubmit(handleChangeInfo)} autoComplete="off">
             <h6 className="text-slate-400 text-sm mt-3 mb-6 font-bold uppercase">
               Thông tin tài khoản
             </h6>
@@ -120,7 +136,6 @@ export default function CardAccount() {
                   </label>
                   <input
                     {...register("name")}
-                    defaultValue={user?.hoten}
                     type="text"
                     className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   />
@@ -138,7 +153,6 @@ export default function CardAccount() {
                     type="email"
                     className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     disabled
-                    {...register("email")}
                     defaultValue={user?.email}
                   />
                 </div>
@@ -151,7 +165,6 @@ export default function CardAccount() {
                   <input
                     type="text"
                     className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    defaultValue={user?.sdt}
                     {...register("phone")}
                   />
                   {errors?.phone && (
@@ -159,56 +172,14 @@ export default function CardAccount() {
                   )}
                 </div>
               </div>
-
-              <div className="w-full md:px-4">
-                <div className="form-group w-full lg:w-6/12">
-                  <label className="block uppercase text-slate-600 text-xs font-bold mb-2">
-                    Ảnh đại diện
-                  </label>
-                  <div className="flex flex-col md:flex-row items-center justify-center w-full gap-4 duration-200">
-                    <label className="flex flex-col w-full md:w-1/2 h-32 border-4 border-dashed hover:bg-gray-100 hover:border-gray-300 animate-toLeft-hand">
-                      <div className="flex flex-col items-center justify-center pt-7">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-12 h-12 text-gray-400 group-hover:text-gray-600"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <p className="pt-1 text-sm text-center tracking-wider text-gray-400 group-hover:text-gray-600">
-                          Click vào đây để thêm ảnh
-                        </p>
-                      </div>
-                      <input
-                        type="file"
-                        className="opacity-0 hidden"
-                        {...register("img")}
-                        accept=".jpg, .png, .jpeg"
-                      />
-                      {/* {errors?.img && <ErrorMessage mess={errors?.img?.message} />} */}
-                    </label>
-                    <div className="w-full md:w-1/3 animate-toLeft-hand">
-                      <img
-                        src={imgView || user?.anhdaidien}
-                        alt=""
-                        className="w-full object-contain rounded-xl"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <button
+              type="submit"
               className="btn-submit bg-sky-500 mt-3 btn-disabled"
               disabled={disabled || loading}
             >
-              Lưu
+              {loading ? <Spinner /> : "Lưu"}
             </button>
           </form>
         </div>

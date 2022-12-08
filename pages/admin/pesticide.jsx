@@ -63,7 +63,7 @@ export default function Pesticide() {
     listPest: yup
       .array()
       .min(1, "Phải chọn ít nhất một loại bệnh")
-      .of(yup.string().required())
+      .of(yup.string().required("Phải chọn ít nhất một loại bệnh"))
       .required("Hãy chọn bệnh"),
   });
   const {
@@ -106,8 +106,8 @@ export default function Pesticide() {
 
       dispatch(setLoading(true));
       const formData = new FormData();
-      formData.append("pesticideName", data.pesticideName);
-      formData.append("uses", data.uses);
+      formData.append("pesticideName", data.pesticideName.trim());
+      formData.append("uses", data.uses.trim());
       formData.append("file", data.img[0]);
       test.forEach((element) => {
         formData.append("pests", JSON.stringify(element));
@@ -191,7 +191,7 @@ export default function Pesticide() {
                     </div>
                   </td>
                   <td className="border-t-0 p-4 align-middle border-l-0 border-r-0 text-xs max-w-xs">
-                    {item?.congdung} 
+                    {item?.congdung}
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                     <TableDropdown />
@@ -203,7 +203,10 @@ export default function Pesticide() {
         {show && (
           <Modal title="Thêm thuốc trị" handleClose={handCloseModal}>
             <div className="">
-              <form onSubmit={handleSubmit(handleSubmitForm)}>
+              <form
+                onSubmit={handleSubmit(handleSubmitForm)}
+                autoComplete="off"
+              >
                 <div className="form-group">
                   <label className="form-label" htmlFor="grid-password">
                     Tên thuốc
@@ -222,37 +225,39 @@ export default function Pesticide() {
                   <label className="form-label">
                     Hãy chọn ảnh cho loại thuốc này
                   </label>
-                  <div className="flex items-center justify-center w-full gap-4 duration-200">
+                  <div className="flex items-center flex-col justify-center w-full gap-4 duration-200">
                     {!watch("img") || watch("img").length === 0 ? (
-                      <label className="flex flex-col w-1/2 h-32 border-4 border-dashed hover:bg-gray-100 hover:border-gray-300 animate-toLeft-hand">
-                        <div className="flex flex-col items-center justify-center pt-7">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-12 h-12 text-gray-400 group-hover:text-gray-600"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          <p className="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">
-                            Click vào đây để thêm ảnh
-                          </p>
-                        </div>
-                        <input
-                          type="file"
-                          className="opacity-0 hidden"
-                          {...register("img")}
-                          // onChange={(event) => handleImgChange(event)}
-                          accept=".jpg, .png, .jpeg"
-                        />
+                      <>
+                        <label className="flex flex-col w-1/2 h-32 border-4 border-dashed hover:bg-gray-100 hover:border-gray-300 animate-toLeft-hand">
+                          <div className="flex flex-col items-center justify-center pt-7">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="w-12 h-12 text-gray-400 group-hover:text-gray-600"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            <p className="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600 text-center">
+                              Click vào đây để thêm ảnh
+                            </p>
+                          </div>
+                          <input
+                            type="file"
+                            className="opacity-0 hidden"
+                            {...register("img")}
+                            // onChange={(event) => handleImgChange(event)}
+                            accept=".jpg, .png, .jpeg"
+                          />
+                        </label>
                         {errors?.img && (
                           <ErrorMessage mess={errors?.img?.message} />
                         )}
-                      </label>
+                      </>
                     ) : (
                       <div className="w-1/2 animate-toLeft-hand">
                         <img

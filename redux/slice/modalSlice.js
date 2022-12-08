@@ -6,6 +6,7 @@ const modalSlice = createSlice({
     show: false,
     showModalPostDetail: false,
     showModalInputNote: false,
+    showFormChangeAvatar: false,
   },
   reducers: {
     setShow: (state, action) => {
@@ -17,10 +18,17 @@ const modalSlice = createSlice({
     setShowModalInputNote: (state, action) => {
       state.showModalInputNote = action.payload;
     },
+    setShowFormChangeAvatar: (state, action) => {
+      state.showFormChangeAvatar = action.payload;
+    },
   },
 });
 
 const { reducer, actions } = modalSlice;
-export const { setShow, setShowModalPostDetail, setShowModalInputNote } =
-  actions;
+export const {
+  setShow,
+  setShowModalPostDetail,
+  setShowModalInputNote,
+  setShowFormChangeAvatar,
+} = actions;
 export default reducer;

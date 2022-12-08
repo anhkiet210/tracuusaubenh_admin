@@ -112,9 +112,9 @@ export default function Crops() {
     try {
       dispatch(setLoading(true));
       const formData = new FormData();
-      formData.append("cropName", data.name);
+      formData.append("cropName", data.name.trim());
       formData.append("file", data.img[0]);
-      formData.append("shortDes", data.shortDes);
+      formData.append("shortDes", data.shortDes.trim());
       const res = await createCrop(formData);
       if (res?.code === "ERR_NETWORK") {
         enqueueSnackbar("Lỗi kết nối server!", {

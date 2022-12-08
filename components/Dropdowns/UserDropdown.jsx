@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 //func
 import { setInfoCurrentUser, setTokenRedux } from "../../redux/slice/authSlice";
 import { useRouter } from "next/router";
+import { setShowFormChangeAvatar } from "../../redux/slice/modalSlice";
 
 const UserDropdown = () => {
   const user = useSelector((state) => state.auth.currentUser);
@@ -26,6 +27,7 @@ const UserDropdown = () => {
 
   const handleLogout = () => {
     try {
+      closeDropdownPopover();
       if (typeof window !== undefined) {
         console.log("logout");
         localStorage.removeItem("Token");
@@ -37,6 +39,12 @@ const UserDropdown = () => {
       console.log(error);
     }
   };
+
+  const handleShowFormChangeAvatar = () => {
+    dispatch(setShowFormChangeAvatar(true));
+    closeDropdownPopover();
+  };
+
   return (
     <>
       <a
@@ -62,7 +70,7 @@ const UserDropdown = () => {
         ref={popoverDropdownRef}
         className={
           (dropdownPopoverShow ? "block " : "hidden ") +
-          "bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
+          "bg-white text-base z-50 float-left list-none text-left rounded shadow-lg min-w-48 p-2"
         }
       >
         {/* <a
@@ -92,10 +100,18 @@ const UserDropdown = () => {
         >
           Something else here
         </a> */}
-        {/* <div className="h-0 my-2 border border-solid border-slate-100" /> */}
         <button
           className={
-            "text-sm p-2 font-normal w-full whitespace-nowrap bg-transparent text-slate-700 md:text-base"
+            "text-sm p-2 font-normal w-full rounded-lg  whitespace-nowrap bg-transparent text-slate-700 hover:bg-slate-600 hover:text-slate-300 duration-300 md:text-base "
+          }
+          onClick={handleShowFormChangeAvatar}
+        >
+          Đổi ảnh đại diện
+        </button>
+        <div className=" border border-solid border-slate-100" />
+        <button
+          className={
+            "text-sm p-2 font-normal w-full rounded-lg  whitespace-nowrap bg-transparent text-slate-700 hover:bg-slate-600 hover:text-slate-300 duration-300 md:text-base"
           }
           onClick={handleLogout}
         >

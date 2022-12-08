@@ -27,3 +27,21 @@ export const changePassword = async (info) => {
     return error;
   }
 };
+
+export const changeAvatar = async (info) => {
+  try {
+    const res = await put("/api/admin/change-avatar", info);
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const UpdateInfo = async (info) => {
+  try {
+    const res = await put("/api/admin/update-info", info);
+    return res;
+  } catch (error) {
+    return error;
+  }
+};

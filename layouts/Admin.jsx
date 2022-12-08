@@ -9,7 +9,7 @@ import {
   setInfoAllUsers,
 } from "../redux/slice/authSlice.js";
 import { setAllPests } from "../redux/slice/pestSlice.js";
-import { setAllPostPending, setPostPending } from "../redux/slice/postSlice";
+import { setAllPostPending } from "../redux/slice/postSlice";
 import { setAllCrops } from "../redux/slice/cropSlice.js";
 import { getAllCrops } from "../services/cropService.js";
 import { getAllPostPending } from "../services/postService.js";
@@ -25,9 +25,13 @@ import AdminNavbar from "../components/Navbars/AdminNavbar.jsx";
 import Sidebar from "../components/Sidebar/Sidebar.jsx";
 import HeaderStats from "../components/Headers/HeaderStats.jsx";
 import FooterAdmin from "../components/Footers/FooterAdmin.jsx";
+import FormChangeAvatar from "../components/Modal/ModalChangeAvatar/index.jsx";
 
 export default function Admin({ children }) {
   const tokenRedux = useSelector((state) => state.auth.tokenRedux);
+  const showFormChangeAvatar = useSelector(
+    (state) => state.modal.showFormChangeAvatar
+  );
   const dispatch = useDispatch();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -236,6 +240,7 @@ export default function Admin({ children }) {
           {children}
           <FooterAdmin />
         </div>
+        {showFormChangeAvatar && <FormChangeAvatar />}
       </div>
     </>
   );
