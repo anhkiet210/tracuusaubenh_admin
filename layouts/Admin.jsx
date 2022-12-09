@@ -55,11 +55,11 @@ export default function Admin({ children }) {
       }
 
       if (res?.code === "ERR_BAD_RESPONSE") {
-        enqueueSnackbar(res?.response?.data?.message, {
-          variant: "error",
-          autoHideDuration: 2000,
-        });
-        // localStorage.removeItem("Token");
+        // enqueueSnackbar(res?.response?.data?.message, {
+        //   variant: "error",
+        //   autoHideDuration: 2000,
+        // });
+        localStorage.removeItem("Token");
         router.push("/");
         return;
       }
