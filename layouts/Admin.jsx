@@ -39,12 +39,13 @@ export default function Admin({ children }) {
   const getCurrentUser = async () => {
     try {
       const res = await getInfo();
-      if (res?.status === 401) {
+      console.log("res: ", res);
+      if (res?.response?.status === 401) {
         enqueueSnackbar("Bạn chưa đăng nhập!", {
           variant: "error",
           autoHideDuration: 2000,
         });
-        // localStorage.removeItem("Token");
+        localStorage.removeItem("Token");
         router.push("/");
       }
       if (res?.code === "ERR_NETWORK") {
@@ -59,7 +60,7 @@ export default function Admin({ children }) {
         //   variant: "error",
         //   autoHideDuration: 2000,
         // });
-        localStorage.removeItem("Token");
+        // localStorage.removeItem("Token");
         router.push("/");
         return;
       }
