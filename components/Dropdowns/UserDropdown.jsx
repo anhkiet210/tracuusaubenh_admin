@@ -29,14 +29,14 @@ const UserDropdown = () => {
     try {
       closeDropdownPopover();
       if (typeof window !== undefined) {
-        console.log("logout");
+        // console.log("logout");
         localStorage.removeItem("Token");
         dispatch(setInfoCurrentUser(null));
         dispatch(setTokenRedux(null));
         router.push("/");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

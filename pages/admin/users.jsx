@@ -61,10 +61,10 @@ export default function Tables() {
       if (typeof window !== undefined) {
         const result = window.confirm("Bạn có muốn xóa người dùng này không?");
         if (result) {
-          console.log("id: ", id);
+          // console.log("id: ", id);
           dispatch(setLoading(true));
           const res = await deleteUser(id);
-          console.log("delete user: ", res);
+          // console.log("delete user: ", res);
           if (res?.code === "ERR_NETWORK") {
             enqueueSnackbar("Lỗi kết nối server!", {
               variant: "error",

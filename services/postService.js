@@ -14,7 +14,7 @@ export const changeStatusPost = async (id, option) => {
     const res = await put(`/api/post/change-status-post/${id}`, option);
     return res;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error;
   }
 };

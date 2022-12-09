@@ -152,7 +152,7 @@ export default function Pesticide() {
   };
 
   // console.log(watch("listPest"));
-  console.log("all pest: ", allPesticides?.Benhs);
+  // console.log("all pest: ", allPesticides?.Benhs);
 
   return (
     <>

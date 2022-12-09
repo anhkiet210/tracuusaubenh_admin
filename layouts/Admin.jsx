@@ -39,7 +39,7 @@ export default function Admin({ children }) {
   const getCurrentUser = async () => {
     try {
       const res = await getInfo();
-      console.log("res: ", res);
+      // console.log("res: ", res);
       if (res?.response?.status === 401) {
         enqueueSnackbar("Bạn chưa đăng nhập!", {
           variant: "error",
@@ -69,7 +69,7 @@ export default function Admin({ children }) {
         dispatch(setInfoCurrentUser(res?.user));
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       enqueueSnackbar(error.message, {
         variant: "error",
         autoHideDuration: 2000,
