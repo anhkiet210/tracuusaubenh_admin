@@ -1171,6 +1171,10 @@ select {
   margin-right: 0px;
 }
 
+.mb-10 {
+  margin-bottom: 2.5rem;
+}
+
 .block {
   display: block;
 }
@@ -1693,6 +1697,11 @@ select {
 
 .border-transparent {
   border-color: transparent;
+}
+
+.border-error {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 51 51 / var(--tw-border-opacity));
 }
 
 .bg-black {
@@ -2574,6 +2583,11 @@ select {
 .hover\:bg-slate-900:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(15 23 42 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-error:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 51 51 / var(--tw-bg-opacity));
 }
 
 .hover\:text-white:hover {

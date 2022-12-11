@@ -18,6 +18,7 @@ import { getAllUser } from "../services/userService.js";
 import { getAllPests } from "../services/pestService.js";
 import { getAllPesticides } from "../services/pesticideService.js";
 import { setAllPesticide } from "../redux/slice/pesticideSlice.js";
+import { setAllStatistical } from "../redux/slice/statisticalSlice.js";
 
 // components
 
@@ -26,6 +27,7 @@ import Sidebar from "../components/Sidebar/Sidebar.jsx";
 import HeaderStats from "../components/Headers/HeaderStats.jsx";
 import FooterAdmin from "../components/Footers/FooterAdmin.jsx";
 import FormChangeAvatar from "../components/Modal/ModalChangeAvatar/index.jsx";
+import { getAllStatistical } from "../services/statisticalService.js";
 
 export default function Admin({ children }) {
   const tokenRedux = useSelector((state) => state.auth.tokenRedux);
@@ -199,6 +201,21 @@ export default function Admin({ children }) {
     }
   };
 
+  const handleGetAllStatistical = async () => {
+    try {
+      const res = await getAllStatistical();
+      console.log("res: ", res);
+      if (res?.success) {
+        dispatch(setAllStatistical(res?.data));
+      }
+    } catch (error) {
+      enqueueSnackbar("Tải dữ liệu thống kê thất bại!", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    }
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const tokenLocal = localStorage.getItem("Token");
@@ -228,6 +245,10 @@ export default function Admin({ children }) {
 
   useEffect(() => {
     handleGetAllPesticides();
+  }, []);
+
+  useEffect(() => {
+    handleGetAllStatistical();
   }, []);
 
   return (

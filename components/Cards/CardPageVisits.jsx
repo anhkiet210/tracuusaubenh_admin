@@ -1,8 +1,34 @@
 import React from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import Paginationtable from "../PaginationTable";
 
 // components
 
 export default function CardPageVisits() {
+  const allStatistical = useSelector(
+    (state) => state.statistical.allStatistical
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // console.log("all pest: ", allCrops);
+
+  const itemPerPage = 5;
+  const totalPage = Math.ceil(allStatistical?.length / itemPerPage);
+  const lastIndex = currentPage * itemPerPage;
+  const firstIndex = lastIndex - itemPerPage;
+
+  const handleNextPage = () => {
+    if (currentPage < totalPage) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrePage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
@@ -43,28 +69,46 @@ export default function CardPageVisits() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                  /argon/
-                </th>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  4,569
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <img
-                    src="https://res.cloudinary.com/ak210/image/upload/v1666934115/ak-tracuusaubenh/depositphotos_247872612-stock-illustration-no-image-available-icon-vector_gojmbi.webp"
-                    className="h-12 w-12 bg-white rounded-full border"
-                    alt="..."
-                  ></img>
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  2
-                </td>
-              </tr>
+              {allStatistical?.length > 0 &&
+                allStatistical.map((item) => (
+                  <tr key={item._id}>
+                    <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                      <p>Lá: {item?.tukhoa?.la}</p>
+                      <p>Thân: {item?.tukhoa?.than}</p>
+                      <p>Rễ: {item?.tukhoa?.re}</p>
+                    </th>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {item?.benh?.tenBenh}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <img
+                        src={item?.benh?.anh}
+                        className="h-12 w-12 bg-white rounded-full border"
+                        alt="..."
+                      ></img>
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {item?.luot}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
-          {/* phân trang  */}
         </div>
+      </div>
+      <div className="mb-10">
+        {/* phân trang  */}
+        {allStatistical?.length > 0 && allStatistical && (
+          <Paginationtable
+            firstIndex={firstIndex}
+            lastIndex={lastIndex}
+            total={allStatistical?.length}
+            handleNextPage={handleNextPage}
+            handlePrePage={handlePrePage}
+            totalPage={totalPage}
+            currentPage={currentPage}
+          />
+        )}
       </div>
     </>
   );

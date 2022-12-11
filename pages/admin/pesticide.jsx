@@ -20,6 +20,8 @@ import ErrorMessage from "../../components/ErrorMessage/index.jsx";
 import Spinner from "../../components/Spinner/index.jsx";
 import { addPesticide } from "../../redux/slice/pesticideSlice.js";
 import { setShow } from "../../redux/slice/modalSlice.js";
+import Paginationtable from "../../components/PaginationTable/index.jsx";
+import { sliderClasses } from "@mui/material";
 
 const thead = [
   {
@@ -43,12 +45,21 @@ const thead = [
 export default function Pesticide() {
   const allPesticides = useSelector((state) => state.pesticide.allPesticides);
   const allPests = useSelector((state) => state.pest.allPests);
+  
   const loading = useSelector((state) => state.loading.loading);
   const show = useSelector((state) => state.modal.show);
   const [showModal, setShowModal] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [imgView, setImgView] = useState("");
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // console.log("all pest: ", allCrops);
+
+  const itemPerPage = 5;
+  const totalPage = Math.ceil(allPesticides?.length / itemPerPage);
+  const lastIndex = currentPage * itemPerPage;
+  const firstIndex = lastIndex - itemPerPage;
 
   const schema = yup.object().shape({
     pesticideName: yup.string().required("Hãy nhập tên thuốc"),
@@ -89,6 +100,18 @@ export default function Pesticide() {
 
   const handleSelectAgain = () => {
     reset({ img: "" });
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPage) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrePage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
   };
 
   useEffect(() => {
@@ -132,6 +155,15 @@ export default function Pesticide() {
         return;
       }
 
+      if (res?.response?.status === 402) {
+        enqueueSnackbar(res?.response.data.message, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+        dispatch(setLoading(false));
+        return;
+      }
+
       if (res?.response?.status === 401) {
         enqueueSnackbar(res?.response.data.message, {
           variant: "error",
@@ -140,8 +172,19 @@ export default function Pesticide() {
         dispatch(setLoading(false));
         return;
       }
+      enqueueSnackbar(res?.message, {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
       dispatch(addPesticide(res?.data));
       dispatch(setLoading(false));
+      handCloseModal();
+      reset({
+        pesticideName: "",
+        uses: "",
+        img: "",
+        listPest: "",
+      });
     } catch (error) {
       dispatch(setLoading(false));
       enqueueSnackbar(error.message, {
@@ -150,9 +193,6 @@ export default function Pesticide() {
       });
     }
   };
-
-  // console.log(watch("listPest"));
-  // console.log("all pest: ", allPesticides?.Benhs);
 
   return (
     <>
@@ -165,7 +205,7 @@ export default function Pesticide() {
             name="Danh sách thuốc đặc trị"
           >
             {allPesticides.length > 0 &&
-              allPesticides?.map((item) => (
+              allPesticides?.slice(firstIndex, lastIndex).map((item) => (
                 <tr key={item._id}>
                   <td className="border-t-0 p-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap">
                     {item?.tenthuoc}
@@ -193,12 +233,30 @@ export default function Pesticide() {
                   <td className="border-t-0 p-4 align-middle border-l-0 border-r-0 text-xs max-w-xs">
                     {item?.congdung}
                   </td>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                    <TableDropdown />
-                  </td>
+                  {/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+                    <button
+                      className="py-2 px-3 border border-error rounded-lg duration-300 text-error relative hover:text-white hover:bg-error btn-disabled"
+                      onClick={handleDeletePost}
+                      disabled={loading}
+                    >
+                      {loading ? <Spinner /> : "Xóa"}
+                      Xóa
+                    </button>
+                  </td> */}
                 </tr>
               ))}
           </CardTable>
+          {allPesticides?.length > 0 && allPesticides && (
+            <Paginationtable
+              firstIndex={firstIndex}
+              lastIndex={lastIndex}
+              total={allPesticides?.length}
+              handleNextPage={handleNextPage}
+              handlePrePage={handlePrePage}
+              totalPage={totalPage}
+              currentPage={currentPage}
+            />
+          )}
         </div>
         {show && (
           <Modal title="Thêm thuốc trị" handleClose={handCloseModal}>

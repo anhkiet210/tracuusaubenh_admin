@@ -56,7 +56,7 @@ export default function HeaderStats() {
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
                   statSubtitle="Hiệu suất"
-                  statTitle="49,65%"
+                  statTitle="80%"
                   statPercent="12"
                   statIconName="fas fa-percent"
                   // statArrow="up"
